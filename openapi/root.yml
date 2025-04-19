@@ -10,6 +10,10 @@ components:
     BeareAuth:
       type: http
       scheme: bearer
+  schemas:
+    User:
+      $ref: ./components/schemas/User.yml
+
 servers:
   - url: http://localhost:8000/api
     description: 8001のAPIサーバー
@@ -24,6 +28,14 @@ paths:
     get:
       summary: test for first api specification
       security: []
+      tags:
+        - health-check
       responses:
         "200":
           description: OK
+  /user:
+    $ref: ./paths/user.yml
+  /top:
+    $ref: ./paths/top.yml
+  /getDepartments:
+    $ref: ./paths/getDepartments.yml
