@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  mock-server:
+    image: stoplight/prism
+    container_name: mock-server
+    command: mock -h 0.0.0.0 /tmp/openapi.yml
+    volumes:
+      - ./openapi/docs:/tmp
+    ports:
+      - "4010:4010"
+  redoc:
+    image: redocly/redoc
+    container_name: redoc
+    environment:
+      - SPEC_URL=swagger.yml
+    volumes:
+      - ./openapi/docs/openapi.yml:/usr/share/nginx/html/swagger.yml
+    ports:
+      - "3032:80"
