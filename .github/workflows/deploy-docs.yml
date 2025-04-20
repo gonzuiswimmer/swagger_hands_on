@@ -14,15 +14,15 @@ jobs:
       - name: Redocly Lint
         uses: fluximus-prime/redocly-cli-github-action@v1
         with:
-          args: "lint root.yml"
+          args: "lint ./openapi/root.yml"
       - name: Redocly Build
         uses: fluximus-prime/redocly-cli-github-action@v1
         with:
-          args: "build-docs root.yml --output=docs/openapi.html"
+          args: "build-docs ./openapi/root.yml --output=docs/openapi.html"
       - name: Redocly Bundle
         uses: fluximus-prime/redocly-cli-github-action@v1
         with:
-          args: "bundle root.yml --output=docs/openapi.yml"
+          args: "bundle ./openapi/root.yml --output=./openapi/docs/openapi.yml"
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
