@@ -1,0 +1,30 @@
+name: Deploy OpenAPI Docs
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    name: build root.yml
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Redocly Lint
+        uses: fluximus-prime/redocly-cli-github-action@v1
+        with:
+          args: "lint root.yml"
+      - name: Redocly Build
+        uses: fluximus-prime/redocly-cli-github-action@v1
+        with:
+          args: "build-docs root.yml --output=docs/openapi.html"
+      - name: Redocly Bundle
+        uses: fluximus-prime/redocly-cli-github-action@v1
+        with:
+          args: "bundle root.yml --output=docs/openapi.yml"
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./openapi/docs
