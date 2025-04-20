@@ -1,0 +1,7 @@
+apis:
+  my-api:
+    root: ./openapi/docs/openapi.yml
+extends:
+  - recommended
+rules:
+  operation-operationId: off
