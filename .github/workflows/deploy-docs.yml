@@ -14,7 +14,7 @@ jobs:
       - name: Redocly Lint
         uses: fluximus-prime/redocly-cli-github-action@v1
         with:
-          args: "lint ./openapi/order/root.yml --format github-actions"
+          args: "lint ./openapi/order/root.yml --format github-actions && lint ./openapi/admin/root.yml --format github-actions && lint ./openapi/admin-agent/root.yml --format github-actions"
           # args: >
           #   lint ./openapi/order/root.yml --format github-actions
           #   lint ./openapi/admin/root.yml --format github-actions
@@ -22,7 +22,7 @@ jobs:
       - name: Redocly Build
         uses: fluximus-prime/redocly-cli-github-action@v1
         with:
-          args: "build-docs ./openapi/order/root.yml --output=./docs/order/index.html"
+          args: "build-docs ./openapi/order/root.yml --output=./docs/order/index.html && build-docs ./openapi/admin/root.yml --output=./docs/admin/index.html && build-docs ./openapi/admin-agent/root.yml --output=./docs/admin-agent/index.html"
           # args: >
           #   build-docs ./openapi/order/root.yml --output=./docs/order/index.html
           #   build-docs ./openapi/admin/root.yml --output=./docs/admin/index.html
@@ -30,7 +30,7 @@ jobs:
       - name: Redocly Bundle
         uses: fluximus-prime/redocly-cli-github-action@v1
         with:
-          args: bundle ./openapi/order/root.yml --output=./docs/order/openapi.yml
+          args: bundle ./openapi/order/root.yml --output=./docs/order/openapi.yml && bundle ./openapi/admin/root.yml --output=./docs/admin/openapi.yml && bundle ./openapi/admin-agent/root.yml --output=./docs/admin-agent/openapi.yml
           # args: >
           #   bundle ./openapi/order/root.yml --output=./docs/order/openapi.yml
           #   bundle ./openapi/admin/root.yml --output=./docs/admin/openapi.yml
