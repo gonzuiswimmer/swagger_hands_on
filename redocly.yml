@@ -1,6 +1,10 @@
 apis:
-  my-api:
-    root: ./openapi/docs/openapi.yml
+  order-api:
+    root: ./docs/order/openapi.yml
+  admin-api:
+    root: ./docs/admin-agent/openapi.yml
+  admin-agent-api:
+    root: ./docs/admin-agent/openapi.yml
 extends:
   - recommended
 rules:
