@@ -1,0 +1,41 @@
+openapi: "3.0.3"
+info:
+  title: API Hands_on
+  version: "1.0"
+  license:
+    name: kazuki_ito
+
+components:
+  securitySchemes:
+    BeareAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    User:
+      $ref: ./components/schemas/User.yml
+
+servers:
+  - url: http://localhost:8000/api
+    description: 8001のAPIサーバーテスト
+  - url: http://localhost:8001/api
+    description: 8001のAPIサーバー
+  - url: http://localhost:8002/api
+    description: 8001のAPIサーバー
+  - url: http://localhost:8003/api
+    description: 8001のAPIサーバー
+paths:
+  /health-check:
+    get:
+      summary: test for first api specification
+      security: []
+      tags:
+        - health-check
+      responses:
+        "200":
+          description: OK
+  /user:
+    $ref: ./paths/user.yml
+  /top:
+    $ref: ./paths/top.yml
+  /getDepartments:
+    $ref: ./paths/getDepartments.yml

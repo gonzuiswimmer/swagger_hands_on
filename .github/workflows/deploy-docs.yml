@@ -14,15 +14,24 @@ jobs:
       - name: Redocly Lint
         uses: fluximus-prime/redocly-cli-github-action@v1
         with:
-          args: "lint ./openapi/root.yml --format github-actions"
+          args: >
+            lint ./openapi/order/root.yml --format github-actions
+            lint ./openapi/admin/root.yml --format github-actions
+            lint ./openapi/admin-agent/root.yml --format github-actions
       - name: Redocly Build
         uses: fluximus-prime/redocly-cli-github-action@v1
         with:
-          args: "build-docs ./openapi/root.yml --output=./openapi/docs/index.html"
+          args: >
+            build-docs ./openapi/order/root.yml --output=./openapi/docs/order/index.html
+            build-docs ./openapi/admin/root.yml --output=./openapi/docs/admin/index.html
+            build-docs ./openapi/admin-agent/root.yml --output=./openapi/docs/admin-agent/index.html
       - name: Redocly Bundle
         uses: fluximus-prime/redocly-cli-github-action@v1
         with:
-          args: "bundle ./openapi/root.yml --output=./openapi/docs/openapi.yml"
+          args: >
+            bundle ./openapi/order/root.yml --output=./openapi/docs/order/openapi.yml
+            bundle ./openapi/admin/root.yml --output=./openapi/docs/admin/openapi.yml
+            bundle ./openapi/admin-agent/root.yml --output=./openapi/docs/admin-agent/openapi.yml
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:

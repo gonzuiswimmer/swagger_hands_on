@@ -11,19 +11,25 @@ docker pull redocly/cli
 - Lint yml
 
 ```
-docker run --rm -v ${PWD}:/spec redocly/cli lint root.yml
+docker run --rm -v ${PWD}:/spec redocly/cli lint /spec/openapi/order/root.yml
+docker run --rm -v ${PWD}:/spec redocly/cli lint /spec/openapi/admin/root.yml
+docker run --rm -v ${PWD}:/spec redocly/cli lint /spec/openapi/admin-agent/root.yml
 ```
 
 - Build yml
 
 ```
-docker run --rm -v ${PWD}:/spec redocly/cli build-docs root.yml --output=docs/openapi.html
+docker run --rm -v ${PWD}:/spec redocly/cli build-docs /spec/openapi/order/root.yml --output=/spec/docs/order/index.html
+docker run --rm -v ${PWD}:/spec redocly/cli build-docs /spec/openapi/admin/root.yml --output=/spec/docs/admin/index.html
+docker run --rm -v ${PWD}:/spec redocly/cli build-docs /spec/openapi/admin-agent/root.yml --output=/spec/docs/admin-agent/index.html
 ```
 
 - Merge yml
 
 ```
-docker run --rm -v ${PWD}:/spec redocly/cli bundle root.yml --output=docs/openapi.yml
+docker run --rm -v ${PWD}:/spec redocly/cli bundle /spec/openapi/order/root.yml --output=/spec/docs/order/openapi.yml
+docker run --rm -v ${PWD}:/spec redocly/cli bundle /spec/openapi/admin/root.yml --output=/spec/docs/admin/openapi.yml
+docker run --rm -v ${PWD}:/spec redocly/cli bundle /spec/openapi/admin-agent/root.yml --output=/spec/docs/admin-agent/openapi.yml
 ```
 
 ## yml をサーバーで起動する

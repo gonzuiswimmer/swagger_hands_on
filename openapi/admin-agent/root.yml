@@ -16,7 +16,7 @@ components:
 
 servers:
   - url: http://localhost:8000/api
-    description: 8001のAPIサーバー
+    description: 8001のAPIサーバーテスト
   - url: http://localhost:8001/api
     description: 8001のAPIサーバー
   - url: http://localhost:8002/api

@@ -1,0 +1,35 @@
+post:
+  tags:
+    - top
+  summary: xxxxxxxxxxxxxxxx
+  description: yyyyyyyyyyyyyyyyyy
+  security: []
+  requestBody:
+    description: "sample"
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            announcements:
+              $ref: ../components/announcement.yml
+            recentReports:
+              $ref: ../components/recentReports.yml
+            reportsOfFollowingUser:
+              $ref: ../components/reportsOfFollowingUser.yml
+            # id:
+            #   type: int
+            #   description: user id
+            #   example: 1
+            # name:
+            #   type: string
+            #   description: user name
+            #   example: "ito"
+            # birth_date:
+            #   type: string
+            #   format: date-time
+            #   description: user's birth date
+            #   example: "yyyy-mm-dd hh:mm:ss"
+  responses:
+    "200":
+      description: "OK"
