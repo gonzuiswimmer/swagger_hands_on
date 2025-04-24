@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
-  title: API Hands_on
-  version: '1.0'
+  title: API Order
+  version: "1.0"
   license:
     name: kazuki_ito
 servers:
@@ -21,7 +21,7 @@ paths:
       tags:
         - health-check
       responses:
-        '200':
+        "200":
           description: OK
   /user:
     get:
@@ -30,12 +30,12 @@ paths:
       summary: get user list
       security: []
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/User"
   /top:
     post:
       tags:
@@ -51,13 +51,13 @@ paths:
               type: object
               properties:
                 announcements:
-                  $ref: '#/components/schemas/announcement'
+                  $ref: "#/components/schemas/announcement"
                 recentReports:
-                  $ref: '#/components/schemas/recentReports'
+                  $ref: "#/components/schemas/recentReports"
                 reportsOfFollowingUser:
-                  $ref: '#/components/schemas/reportsOfFollowingUser'
+                  $ref: "#/components/schemas/reportsOfFollowingUser"
       responses:
-        '200':
+        "200":
           description: OK
   /getDepartments:
     get:
@@ -88,7 +88,7 @@ paths:
                     description: the day where user was retired
                     example: xxxx-yy-mm
       responses:
-        '200':
+        "200":
           description: OK
 components:
   securitySchemes:

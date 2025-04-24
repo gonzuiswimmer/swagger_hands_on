@@ -1,6 +1,6 @@
 openapi: "3.0.3"
 info:
-  title: API Hands_on
+  title: API Order
   version: "1.0"
   license:
     name: kazuki_ito
