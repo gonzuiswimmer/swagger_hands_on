@@ -1,66 +1,209 @@
-# yml のビルド
+<div id="top"></div>
 
-[doc - redocly/cli](https://hub.docker.com/r/redocly/cli)
+## 使用技術一覧
 
-- Pull Docker Image
+<!-- シールド一覧 -->
+<!-- 該当するプロジェクトの中から任意のものを選ぶ-->
+<p style="display: inline">
+  <!-- フロントエンドのフレームワーク一覧 -->
+  <img src="https://img.shields.io/badge/-Node.js-000000.svg?logo=node.js&style=for-the-badge">
+  <!-- バックエンドのフレームワーク一覧 -->
+  <!-- バックエンドの言語一覧 -->
+  <!-- ミドルウェア一覧 -->
+  <!-- インフラ一覧 -->
+  <img src="https://img.shields.io/badge/-Docker-EEE.svg?logo=docker&style=for-the-badge">
+  <img src="https://img.shields.io/badge/-githubactions-FFFFFF.svg?logo=github-actions&style=for-the-badge">
+  <img src="https://img.shields.io/badge/-githubpages-222222.svg?logo=githubpages&style=for-the-badge">
+</p>
+
+## 目次
+
+1. [プロジェクトについて](#プロジェクトについて)
+2. [環境](#環境)
+3. [ディレクトリ構成](#ディレクトリ構成)
+4. [開発環境構築](#開発環境構築)
+5. [トラブルシューティング](#トラブルシューティング)
+
+<!-- READMEの作成方法のドキュメントのリンク -->
+<br />
+<div align="right">
+    <a href="READMEの作成方法のリンク"><strong>READMEの作成方法 »</strong></a>
+</div>
+<br />
+<!-- Dockerfileのドキュメントのリンク -->
+<div align="right">
+    <a href="Dockerfileの詳細リンク"><strong>Dockerfileの詳細 »</strong></a>
+</div>
+<br />
+<!-- プロジェクト名を記載 -->
+
+## プロジェクト名
+
+OpenAPi Docs
+
+<!-- プロジェクトについて -->
+
+## プロジェクトについて
+
+OpenApi に基づいた API 仕様書を記述し、ホットリロードによって自動更新します。更新した API 仕様書は web サーバーで確認したり、mock サーバーで挙動を確認したりできます。</br>
+また、GithubActions と GithubPages を活用して API 仕様書を自動的に公開することで開発効率の向上を図ることができます。
+
+<!-- プロジェクトの概要を記載 -->
+
+  <p align="left">
+    <br />
+    <!-- プロジェクト詳細にBacklogのWikiのリンク -->
+    <a href="Backlogのwikiリンク"><strong>プロジェクト詳細 »</strong></a>
+    <br />
+    <br />
+
+<p align="right">(<a href="#top">トップへ</a>)</p>
+
+## 環境
+
+<!-- 言語、フレームワーク、ミドルウェア、インフラの一覧とバージョンを記載 -->
+
+| 言語・フレームワーク | バージョン   |
+| -------------------- | ------------ |
+| Node.js              | 特に指定なし |
+| Docker               | 特に指定なし |
+
+その他のパッケージのバージョンは package.json を参照（最低限の機能のため、特に指定なし）
+
+<p align="right">(<a href="#top">トップへ</a>)</p>
+
+## ディレクトリ構成
+
+<!-- Treeコマンドを使ってディレクトリ構成を記載 -->
 
 ```
-docker pull redocly/cli
+❯ tree -a -I "node_modules" -L 2
+.
+├── README.md
+├── build.sh　　　　　　　　　　　　 　　# API仕様書のhtmlファイルを生成するスクリプト
+├── docker-compose.yml
+├── docs                              # API仕様書が格納されているディレクトリ。自動生成されたファイルが出力される
+│   ├── admin
+│   │   ├── index.html
+│   │   └── openapi.yml
+│   ├── admin-agent
+│   │   ├── index.html
+│   │   └── openapi.yml
+│   └── order
+│       ├── index.html
+│       └── openapi.yml
+├── lint.sh                           # root.ymlに対して静的解析を実施するスクリプト
+├── merge.sh                          # API仕様書のymlファイルを生成するスクリプト
+├── openapi                           # APIを記述するディレクトリ。開発時はここを編集する
+│   ├── admin
+│   │   ├── components
+│   │   ├── paths
+│   │   └── root.yml                  # 管理ポータルサイトのAPI仕様書のrootファイル
+│   ├── admin-agent
+│   │   ├── components
+│   │   ├── paths
+│   │   └── root.yml                  # 顧客管理サイトのAPI仕様書のrootファイル
+│   └── order
+│       ├── components
+│       ├── paths
+│       └── root.yml                  # 業務サイトのAPI仕様書のrootファイル
+├── package-lock.json
+├── package.json
+├── redocly.yml                       # redoclyの設定ファイル。GithubActionsで必要
+├── sample_readme.md
+└── watch-bundle.js                   # ディレクトリを監視し、ホットリロードを実行するjsファイル
 ```
 
-- Lint yml
+<p align="right">(<a href="#top">トップへ</a>)</p>
 
-```
-docker run --rm -v ${PWD}:/spec redocly/cli lint /spec/openapi/order/root.yml
-docker run --rm -v ${PWD}:/spec redocly/cli lint /spec/openapi/admin/root.yml
-docker run --rm -v ${PWD}:/spec redocly/cli lint /spec/openapi/admin-agent/root.yml
-```
+## 開発環境構築
 
-- Build yml
+<!-- コンテナの作成方法、パッケージのインストール方法など、開発環境構築に必要な情報を記載 -->
 
-```
-docker run --rm -v ${PWD}:/spec redocly/cli build-docs /spec/openapi/order/root.yml --output=/spec/docs/order/index.html
-docker run --rm -v ${PWD}:/spec redocly/cli build-docs /spec/openapi/admin/root.yml --output=/spec/docs/admin/index.html
-docker run --rm -v ${PWD}:/spec redocly/cli build-docs /spec/openapi/admin-agent/root.yml --output=/spec/docs/admin-agent/index.html
-```
+### docker コンテナの構築
 
-- Merge yml
+docker-compose.yml によって、自動的に 6 つのコンテナが立ち上がります。
+（web サーバー 3 + モックサーバー 3）
 
-```
-docker run --rm -v ${PWD}:/spec redocly/cli bundle /spec/openapi/order/root.yml --output=/spec/docs/order/openapi.yml
-docker run --rm -v ${PWD}:/spec redocly/cli bundle /spec/openapi/admin/root.yml --output=/spec/docs/admin/openapi.yml
-docker run --rm -v ${PWD}:/spec redocly/cli bundle /spec/openapi/admin-agent/root.yml --output=/spec/docs/admin-agent/openapi.yml
-```
+- イメージのビルド
 
-## yml をサーバーで起動する
+  `docker compose build`
 
-[doc - redocly/redoc](https://hub.docker.com/r/redocly/redoc/)
+- コンテナ起動
 
-- Pull Docker Image
+  `docker compose up -d`
 
-```
-docker pull redocly/redoc
-```
+- コンテナ停止・削除
 
-- Publish yml and start web server
+  `docker compose down`
 
-```
-docker run -it --rm -p 80:80 -v \ ${PWD}/docs/openapi.yml:/usr/share/nginx/html/swagger.yaml \
--e SPEC_URL=swagger.yaml redocly/redoc
-```
+### 起動するコンテナの詳細
 
-## モックサーバーを立てる
+| コンテナ名       | 役割                               | port | URL                   |
+| ---------------- | ---------------------------------- | ---- | --------------------- |
+| admin-mock       | 管理ポータルサイトのモックサーバー | 4010 | http://localhost:4010 |
+| admin-agent-mock | 顧客管理サイトのモックサーバー     | 4011 | http://localhost:4011 |
+| order-mock       | 業務サイトのモックサーバー         | 4012 | http://localhost:4012 |
+| admin-doc        | 管理ポータルサイトの API 仕様書    | 3030 | http://localhost:3030 |
+| admin-agent-doc  | 顧客管理サイトの API 仕様書        | 3031 | http://localhost:3031 |
+| order-doc        | 業務サイトの API 仕様書            | 3032 | http://localhost:3032 |
 
-[doc - stoplight/prism](https://hub.docker.com/r/stoplight/prism)
+### モックサーバーの使い方
 
-- Pull Docker Image
+Vue の設定ファイル(.env ファイル?)の接続先を対象のコンテナの URL に変更します。</br>
+再起動して API を投げるとモックサーバーへ API 通信が投げられるので、API 仕様書で記述してある sample データのレスポンスが返却されます。</br>
+スキーマ駆動開発時は BE の処理が未完成の場合があるため、返却されるモックデータをもとにその後の挙動を確認してください。※API 仕様書が書かれていることが前提
 
-```
-docker pull stoplight/prism
-```
+### ホットリロードによる API 仕様書の開発
 
-- Start mock server
+`watch-bundle.js`を動かすことによって、openapi 配下のディレクトリを監視し、変更があった場合は自動で分割された yml ファイルを 結合 してくれます。
 
-```
-docker run --rm -it -p 4010:4010 -v ${PWD}/docs:/tmp stoplight/prism mock -h 0.0.0.0 /tmp/openapi.yml
-```
+- chokidar のインストール
+
+`npm install -g chokidar`
+
+- watch-bundle.js の起動
+
+`node watch-bundle.js`
+
+### シェルスクリプト（lint / merge / build）
+
+redocly/cli の公式 Docker イメージを使い、変更した API 仕様書を 静的解析、結合することができます。</br>
+watch-bundle.js を起動している場合は自動で結合した yml ファイルが作成されますが、手動の実行や html ファイルが必要な場合はこちらから実行できます。
+
+- lint
+
+  `./lint.sh $arg1 $arg2 $arg3`
+
+- merge
+
+  `./merge.sh $arg1 $arg2 $arg3`
+
+- bundle（html ファイルの生成）
+
+  `./bundle.sh $arg1 $arg2 $arg3`
+
+※ シェルスクリプト実行時には、対象となるディレクトリ名を引数として 3 つまで指定できます。</br>
+本プロジェクトでは、order, admin, admin-agent から指定できます。引数が未指定の時は 3 つの引数が自動的に指定されます。
+
+## トラブルシューティング
+
+### permission denied
+
+権限がないとシェルスクリプトが実行できません。下記コマンドでシェルスクリプトファイルに実行権限を与えてください
+
+`chmod +x hoge.sh`
+
+### docker daemon is not running
+
+Docker Desktop が起動できていないので起動させましょう
+
+### Ports are not available: address already in use
+
+別のコンテナもしくはローカル上ですでに使っているポートがある可能性があります
+<br>
+下記記事を参考にしてください
+<br>
+[コンテナ起動時に Ports are not available: address already in use が出た時の対処法について](https://qiita.com/shun198/items/ab6eca4bbe4d065abb8f)
+
+<p align="right">(<a href="#top">トップへ</a>)</p>
