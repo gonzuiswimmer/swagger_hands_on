@@ -1,0 +1,10 @@
+http://localhost
+handle_path /admin-mock/api/* {
+  reverse_proxy admin-mock:4010
+}
+handle_path /admin-agent-mock/api/* {
+  reverse_proxy admin-agent-mock:4010
+}
+handle_path /order-mock/api/* {
+  reverse_proxy order-mock:4010
+}

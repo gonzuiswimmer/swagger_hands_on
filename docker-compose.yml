@@ -3,51 +3,40 @@ services:
   admin-mock:
     image: stoplight/prism
     container_name: admin-mock
-    command: mock -h 0.0.0.0 /tmp/admin/openapi.yml
+    command: mock -h 0.0.0.0 -p 4010 /tmp/admin/openapi.yml
     volumes:
       - ./docs:/tmp
-    ports:
-      - "4010:4010"
   admin-agent-mock:
     image: stoplight/prism
     container_name: admin-agent-mock
-    command: mock -h 0.0.0.0 /tmp/admin-admin-agent/openapi.yml
+    command: mock -h 0.0.0.0 -p 4010 /tmp/admin-agent/openapi.yml
     volumes:
       - ./docs:/tmp
-    ports:
-      - "4011:4010"
   order-mock:
     image: stoplight/prism
     container_name: order-mock
-    command: mock -h 0.0.0.0 /tmp/order/openapi.yml
+    command: mock -h 0.0.0.0 -p 4010 /tmp/order/openapi.yml
     volumes:
       - ./docs:/tmp
-    ports:
-      - "4012:4010"
-  admin-doc:
-    image: redocly/redoc
-    container_name: admin-doc
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: swagger-ui
     environment:
-      - SPEC_URL=swagger.yml
+      - SWAGGER_JSON=/openapi/admin-openapi.yml
     volumes:
-      - ./docs/admin/openapi.yml:/usr/share/nginx/html/swagger.yml
+      - ./docs/admin/openapi.yml:/openapi/admin-openapi.yml
+      - ./docs/admin-agent/openapi.yml:/openapi/admin-agent-openapi.yml
+      - ./docs/order/openapi.yml:/openapi/order-openapi.yml
     ports:
-      - "3030:80"
-  admin-agent-doc:
-    image: redocly/redoc
-    container_name: admin-agent-doc
-    environment:
-      - SPEC_URL=swagger.yml
+      - "3030:8080"
+  proxy:
+    image: caddy
+    container_name: proxy-caddy
     volumes:
-      - ./docs/admin-agent/openapi.yml:/usr/share/nginx/html/swagger.yml
+      - ./Caddyfile:/etc/caddy/Caddyfile
     ports:
-      - "3031:80"
-  order-doc:
-    image: redocly/redoc
-    container_name: order-doc
-    environment:
-      - SPEC_URL=swagger.yml
-    volumes:
-      - ./docs/order/openapi.yml:/usr/share/nginx/html/swagger.yml
-    ports:
-      - "3032:80"
+      - "8180:80"
+    depends_on:
+      - admin-mock
+      - admin-agent-mock
+      - order-mock

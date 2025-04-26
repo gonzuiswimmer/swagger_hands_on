@@ -122,8 +122,8 @@ OpenApi に基づいた API 仕様書を記述し、ホットリロードによ�
 
 ### docker コンテナの構築
 
-docker-compose.yml によって、自動的に 6 つのコンテナが立ち上がります。
-（web サーバー 3 + モックサーバー 3）
+docker-compose.yml によって、自動的に 5 つのコンテナが立ち上がります。
+（swagger-ui 1 + モックサーバー 3 + proxy サーバー 1）
 
 - イメージのビルド
 
@@ -144,14 +144,19 @@ docker-compose.yml によって、自動的に 6 つのコンテナが立ち上�
 | admin-mock       | 管理ポータルサイトのモックサーバー | 4010 | http://localhost:4010 |
 | admin-agent-mock | 顧客管理サイトのモックサーバー     | 4011 | http://localhost:4011 |
 | order-mock       | 業務サイトのモックサーバー         | 4012 | http://localhost:4012 |
-| admin-doc        | 管理ポータルサイトの API 仕様書    | 3030 | http://localhost:3030 |
-| admin-agent-doc  | 顧客管理サイトの API 仕様書        | 3031 | http://localhost:3031 |
-| order-doc        | 業務サイトの API 仕様書            | 3032 | http://localhost:3032 |
+| swagger-ui       | API 仕様書の表示                   | 3030 | http://localhost:3030 |
+| proxy-caddy      | プロキシサーバー                   | 8180 | http://localhost:8180 |
+
+### swagger-ui の使いかた
+
+[localhost:3030](localhost:3030) にアクセスすると、swagger-ui によって API 仕様書が確認できます</br>
+デフォルトは admin-api.yml が表示されますが、画面右上の「Explore」から任意の API 仕様書を選択することで、API 仕様書を切り替えて表示できます</br>
 
 ### モックサーバーの使い方
 
-Vue の設定ファイル(.env ファイル?)の接続先を対象のコンテナの URL に変更します。</br>
-再起動して API を投げるとモックサーバーへ API 通信が投げられるので、API 仕様書で記述してある sample データのレスポンスが返却されます。</br>
+Vue の設定ファイル(.env ファイル?)の接続先を対象のコンテナの URL に変更し、再起動します</br>
+または、API 仕様書に記載の任意のモックサーバーとその URL を選択して、proxy 宛にリクエストを送ります</br>
+API を投げるとモックサーバーへ API 通信が投げられるので、API 仕様書で記述してある sample データのレスポンスが返却されます</br>
 スキーマ駆動開発時は BE の処理が未完成の場合があるため、返却されるモックデータをもとにその後の挙動を確認してください。※API 仕様書が書かれていることが前提
 
 ### ホットリロードによる API 仕様書の開発
