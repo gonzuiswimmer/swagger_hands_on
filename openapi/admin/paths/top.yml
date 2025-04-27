@@ -1,35 +1,29 @@
 post:
   tags:
     - top
-  summary: xxxxxxxxxxxxxxxx
-  description: yyyyyyyyyyyyyyyyyy
+  summary: top画面を表示するときに送るapi情報
+  description: top画面を表示するときに送るapi情報
   security: []
   requestBody:
     description: "sample"
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            announcements:
-              $ref: ../components/announcement.yml
-            recentReports:
-              $ref: ../components/recentReports.yml
-            reportsOfFollowingUser:
-              $ref: ../components/reportsOfFollowingUser.yml
-            # id:
-            #   type: int
-            #   description: user id
-            #   example: 1
-            # name:
-            #   type: string
-            #   description: user name
-            #   example: "ito"
-            # birth_date:
-            #   type: string
-            #   format: date-time
-            #   description: user's birth date
-            #   example: "yyyy-mm-dd hh:mm:ss"
+          type: array
+          items:
+            oneOf:
+              - type: array
+                items:
+                  $ref: ../components/schemas/Announcement.yml
+              - type: array
+                items:
+                  $ref: ../components/recentMonthlyReports.yml
+              - type: array
+                items:
+                  $ref: ../components/reportsOfFollowingUser.yml
+
   responses:
     "200":
       description: "OK"
+    "400":
+      description: "Error"

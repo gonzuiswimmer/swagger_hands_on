@@ -109,7 +109,7 @@ OpenApi に基づいた API 仕様書を記述し、ホットリロードによ�
 │       └── root.yml                  # 業務サイトのAPI仕様書のrootファイル
 ├── package-lock.json
 ├── package.json
-├── redocly.yml                       # redoclyの設定ファイル。GithubActionsで必要
+├── redocly.yml                       # redoclyの設定ファイル。GithubActions等で必要
 ├── sample_readme.md
 └── watch-bundle.js                   # ディレクトリを監視し、ホットリロードを実行するjsファイル
 ```

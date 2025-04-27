@@ -23,6 +23,13 @@ servers:
     description: 8001のAPIサーバー
   - url: http://localhost:8003/api
     description: 8001のAPIサーバー
+  - url: http://localhost:8180/admin-mock/api
+    description: adminのモックサーバー
+  - url: http://localhost:8180/admin-agent-mock/api
+    description: admin-agentのモックサーバー
+  - url: http://localhost:8180/order-mock/api
+    description: orderのモックサーバー
+
 paths:
   /health-check:
     get:

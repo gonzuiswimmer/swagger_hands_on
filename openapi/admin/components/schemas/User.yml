@@ -1,11 +1,64 @@
 type: object
 properties:
   id:
-    type: integer
-    format: int64
-    example: 10
-  photos:
-    type: array
-    items:
-      type: string
-    example: ["sample", "example"]
+    type: number
+  name:
+    type: string
+  employee_code:
+    type: string
+  encrypted_email:
+    type: string
+  entry_date:
+    type: string
+    format: date
+  beginner_flg:
+    type: boolean
+  deleted_at:
+    type: string
+    format: date-time
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time
+  encrypted_password:
+    type: string
+  reset_password_token:
+    type: string
+  reset_password_sent_at:
+    type: string
+    format: date-time
+  remember_created_at:
+    type: string
+    format: date-time
+  sign_in_count:
+    type: number
+  current_sign_in_at:
+    type: string
+    format: date-time
+  last_sign_in_at:
+    type: string
+    format: date-time
+  current_sign_in_ip:
+    type: string
+  last_sign_in_ip:
+    type: string
+  faled_attempts:
+    type: number
+  unlock_token:
+    type: string
+  locked_at:
+    type: string
+    format: date-time
+  gender:
+    type: number
+  email:
+    type: string
+  department_id:
+    type: number
+  email_verified_at:
+    type: string
+    format: date-time
+  tenant_id:
+    type: number

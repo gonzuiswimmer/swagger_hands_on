@@ -9,4 +9,8 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/User.yml
+            type: array
+            items:
+              $ref: ../components/schemas/User.yml
+    "400":
+      description: "Error"

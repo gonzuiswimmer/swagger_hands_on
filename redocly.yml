@@ -9,3 +9,4 @@ extends:
   - recommended
 rules:
   operation-operationId: off
+  no-server-example.com: off

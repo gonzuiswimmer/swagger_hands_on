@@ -4,15 +4,14 @@ info:
   version: "1.0"
   license:
     name: kazuki_ito
+    url: https://gonzuiswimmer.github.io/swagger_hands_on/admin/
 
 components:
   securitySchemes:
     BeareAuth:
       type: http
       scheme: bearer
-  schemas:
-    User:
-      $ref: ./components/schemas/User.yml
+      bearerFormat: JWT
 
 servers:
   - url: http://localhost:8000/api
@@ -29,6 +28,7 @@ servers:
     description: admin-agentのモックサーバー
   - url: http://localhost:8180/order-mock/api
     description: orderのモックサーバー
+
 paths:
   /health-check:
     get:
@@ -39,6 +39,8 @@ paths:
       responses:
         "200":
           description: OK
+        "400":
+          description: "Error"
   /user:
     $ref: ./paths/user.yml
   /top:

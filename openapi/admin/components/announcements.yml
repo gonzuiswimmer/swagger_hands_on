@@ -8,7 +8,7 @@ properties:
     example: "テスト記事タイトル"
   body:
     type: string
-    example: "テスト記事の見出し"
+    example: "テスト記事の内容"
   published_date:
     type: string
     format: date
