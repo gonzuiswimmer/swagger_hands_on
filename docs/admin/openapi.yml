@@ -20,6 +20,15 @@ servers:
     description: admin-agentのモックサーバー
   - url: http://localhost:8180/order-mock/api
     description: orderのモックサーバー
+tags:
+  - name: health-check
+    description: 動作確認用API
+  - name: admin-users
+    description: 管理/ユーザー系API
+  - name: admin-announcement
+    description: 管理/お知らせ系API
+  - name: admin-inquiry
+    description: 管理/問い合わせ系API
 paths:
   /health-check:
     get:
@@ -59,23 +68,25 @@ paths:
       requestBody:
         description: sample
         content:
-          application/json:
-            schema:
-              type: array
-              items:
-                oneOf:
-                  - type: array
-                    items:
-                      $ref: '#/components/schemas/Announcement'
-                  - type: array
-                    items:
-                      $ref: '#/components/schemas/recentMonthlyReports'
-                  - type: array
-                    items:
-                      $ref: '#/components/schemas/reportsOfFollowingUser'
+          application/json: {}
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                    - type: array
+                      items:
+                        $ref: '#/components/schemas/Announcement'
+                    - type: array
+                      items:
+                        $ref: '#/components/schemas/recentMonthlyReports'
+                    - type: array
+                      items:
+                        $ref: '#/components/schemas/reportsOfFollowingUser'
         '400':
           description: Error
   /getDepartments:
@@ -88,27 +99,83 @@ paths:
       requestBody:
         description: you need requestBody to fetch department list
         content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: object
-                properties:
-                  department_id:
-                    type: integer
-                    format: int64
-                    example: 1
-                  department_name:
-                    type: string
-                    example: web
-                  retired_date:
-                    type: string
-                    format: date
-                    description: the day where user was retired
-                    example: xxxx-yy-mm
+          application/json: {}
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Department'
+        '400':
+          description: Error
+  /admin/users:
+    get:
+      tags:
+        - admin-users
+      summary: ユーザー検索/一覧画面表示時にuserListを返す
+      description: ユーザー検索/一覧画面表示時にuserListを返す
+      security: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - retired
+                    - working
+                name:
+                  type: string
+                  example: 佐藤
+                hiredMonth:
+                  type: string
+                  format: date-time
+                department:
+                  $ref: '#/components/schemas/DepartmentEnum'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        type: object
+                        allOf:
+                          - $ref: '#/components/schemas/User'
+                          - properties:
+                              department:
+                                $ref: '#/components/schemas/Department'
+                    current_pape:
+                      type: integer
+                      example: 1
+                    nex_page_url:
+                      type: string
+                      example: http://localhost/api/admin/xxxxx
+                    path:
+                      type: string
+                      example: http://localhost/api/admin/xxxxx
+                    per_page:
+                      type: integer
+                      example: 20
+                    prev_page_url:
+                      type: string
+                      example: null
+                    to:
+                      type: integer
+                      example: 20
+                    total:
+                      type: integer
+                      example: 92
         '400':
           description: Error
 components:
@@ -331,3 +398,47 @@ components:
         likes_count:
           type: number
           example: 0
+    Department:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          enum:
+            - PHP
+            - WEB
+            - JAVA
+            - FR
+            - CL
+            - ML
+            - QA
+            - 内勤
+        deleted_at:
+          type: string
+          format: date-time
+          example: '2025-04-27T05:03:42'
+        created_at:
+          type: string
+          format: date-time
+          example: '2025-04-27T05:03:42'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2025-04-27T05:03:42'
+    DepartmentEnum:
+      type: integer
+      enum:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        - 9
+      description: |
+        * 1 - WEB * 2 - CL * 3 - ML * 4 - 内勤 * 5 - 未設定 * 6 - FR * 7 - QA * 8 - PHP

@@ -1,0 +1,21 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    example: 1
+  name:
+    type: string
+    enum: [PHP, WEB, JAVA, FR, CL, ML, QA, 内勤]
+  deleted_at:
+    type: string
+    format: date-time
+    example: "2025-04-27T05:03:42"
+  created_at:
+    type: string
+    format: date-time
+    example: "2025-04-27T05:03:42"
+  updated_at:
+    type: string
+    format: date-time
+    example: "2025-04-27T05:03:42"

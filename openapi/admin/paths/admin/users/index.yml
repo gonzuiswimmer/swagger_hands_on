@@ -1,0 +1,66 @@
+get:
+  tags:
+    - admin-users
+  summary: ユーザー検索/一覧画面表示時にuserListを返す
+  description: ユーザー検索/一覧画面表示時にuserListを返す
+  security: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          properties:
+            status:
+              type: string
+              enum: [retired, working]
+            name:
+              type: string
+              example: 佐藤
+            hiredMonth:
+              type: string
+              format: date-time
+            department:
+              $ref: ../../../components/schemas/Enum/DepartmentEnum.yml
+
+  responses:
+    "200":
+      description: "OK"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    allOf:
+                      - $ref: ../../../components/schemas/User.yml
+                      - properties:
+                          department:
+                            $ref: ../../../components/schemas/Department.yml
+
+                current_pape:
+                  type: integer
+                  example: 1
+                nex_page_url:
+                  type: string
+                  example: http://localhost/api/admin/xxxxx
+                path:
+                  type: string
+                  example: http://localhost/api/admin/xxxxx
+                per_page:
+                  type: integer
+                  example: 20
+                prev_page_url:
+                  type: string
+                  example: null
+                to:
+                  type: integer
+                  example: 20
+                total:
+                  type: integer
+                  example: 92
+    "400":
+      description: Error

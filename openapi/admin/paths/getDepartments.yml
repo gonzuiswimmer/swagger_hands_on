@@ -7,26 +7,16 @@ get:
   requestBody:
     description: you need requestBody to fetch department list
     content:
-      application/json:
-        schema:
-          type: array
-          items:
-            type: object
-            properties:
-              department_id:
-                type: integer
-                format: int64
-                example: 1
-              department_name:
-                type: string
-                example: "web"
-              retired_date:
-                type: string
-                format: date
-                description: the day where user was retired
-                example: xxxx-yy-mm
+      application/json: {}
+
   responses:
     "200":
       description: "OK"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../components/schemas/Department.yml
     "400":
       description: "Error"

@@ -7,23 +7,25 @@ post:
   requestBody:
     description: "sample"
     content:
-      application/json:
-        schema:
-          type: array
-          items:
-            oneOf:
-              - type: array
-                items:
-                  $ref: ../components/schemas/Announcement.yml
-              - type: array
-                items:
-                  $ref: ../components/recentMonthlyReports.yml
-              - type: array
-                items:
-                  $ref: ../components/reportsOfFollowingUser.yml
+      application/json: {}
 
   responses:
     "200":
       description: "OK"
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: ../components/schemas/Announcement.yml
+                - type: array
+                  items:
+                    $ref: ../components/recentMonthlyReports.yml
+                - type: array
+                  items:
+                    $ref: ../components/reportsOfFollowingUser.yml
     "400":
       description: "Error"
