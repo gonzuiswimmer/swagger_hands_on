@@ -4,6 +4,7 @@ info:
   version: '1.0'
   license:
     name: kazuki_ito
+    url: https://gonzuiswimmer.github.io/swagger_hands_on/admin/
 servers:
   - url: http://localhost:8000/api
     description: 8001のAPIサーバーテスト
@@ -13,6 +14,21 @@ servers:
     description: 8001のAPIサーバー
   - url: http://localhost:8003/api
     description: 8001のAPIサーバー
+  - url: http://localhost:8180/admin-mock/api
+    description: adminのモックサーバー
+  - url: http://localhost:8180/admin-agent-mock/api
+    description: admin-agentのモックサーバー
+  - url: http://localhost:8180/order-mock/api
+    description: orderのモックサーバー
+tags:
+  - name: health-check
+    description: 動作確認用API
+  - name: admin-users
+    description: 管理/ユーザー系API
+  - name: admin-announcement
+    description: 管理/お知らせ系API
+  - name: admin-inquiry
+    description: 管理/問い合わせ系API
 paths:
   /health-check:
     get:
@@ -23,6 +39,8 @@ paths:
       responses:
         '200':
           description: OK
+        '400':
+          description: Error
   /user:
     get:
       tags:
@@ -35,30 +53,42 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '400':
+          description: Error
   /top:
     post:
       tags:
         - top
-      summary: xxxxxxxxxxxxxxxx
-      description: yyyyyyyyyyyyyyyyyy
+      summary: top画面を表示するときに送るapi情報
+      description: top画面を表示するときに送るapi情報
       security: []
       requestBody:
         description: sample
         content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                announcements:
-                  $ref: '#/components/schemas/announcement'
-                recentReports:
-                  $ref: '#/components/schemas/recentReports'
-                reportsOfFollowingUser:
-                  $ref: '#/components/schemas/reportsOfFollowingUser'
+          application/json: {}
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                    - type: array
+                      items:
+                        $ref: '#/components/schemas/Announcement'
+                    - type: array
+                      items:
+                        $ref: '#/components/schemas/recentMonthlyReports'
+                    - type: array
+                      items:
+                        $ref: '#/components/schemas/reportsOfFollowingUser'
+        '400':
+          description: Error
   /getDepartments:
     get:
       tags:
@@ -69,86 +99,346 @@ paths:
       requestBody:
         description: you need requestBody to fetch department list
         content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: object
-                properties:
-                  department_id:
-                    type: integer
-                    format: int64
-                    example: 1
-                  department_name:
-                    type: string
-                    example: web
-                  retired_date:
-                    type: string
-                    format: date
-                    description: the day where user was retired
-                    example: xxxx-yy-mm
+          application/json: {}
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Department'
+        '400':
+          description: Error
+  /admin/users:
+    get:
+      tags:
+        - admin-users
+      summary: ユーザー検索/一覧画面表示時にuserListを返す
+      description: ユーザー検索/一覧画面表示時にuserListを返す
+      security: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - retired
+                    - working
+                name:
+                  type: string
+                  example: 佐藤
+                hiredMonth:
+                  type: string
+                  format: date-time
+                department:
+                  $ref: '#/components/schemas/DepartmentEnum'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        type: object
+                        allOf:
+                          - $ref: '#/components/schemas/User'
+                          - properties:
+                              department:
+                                $ref: '#/components/schemas/Department'
+                    current_pape:
+                      type: integer
+                      example: 1
+                    nex_page_url:
+                      type: string
+                      example: http://localhost/api/admin/xxxxx
+                    path:
+                      type: string
+                      example: http://localhost/api/admin/xxxxx
+                    per_page:
+                      type: integer
+                      example: 20
+                    prev_page_url:
+                      type: string
+                      example: null
+                    to:
+                      type: integer
+                      example: 20
+                    total:
+                      type: integer
+                      example: 92
+        '400':
+          description: Error
 components:
   securitySchemes:
     BeareAuth:
       type: http
       scheme: bearer
+      bearerFormat: JWT
   schemas:
     User:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
-          example: 10
-        photos:
-          type: array
-          items:
-            type: string
-          example:
-            - sample
-            - example
-    announcement:
+          type: number
+        name:
+          type: string
+        employee_code:
+          type: string
+        encrypted_email:
+          type: string
+        entry_date:
+          type: string
+          format: date
+        beginner_flg:
+          type: boolean
+        deleted_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        encrypted_password:
+          type: string
+        reset_password_token:
+          type: string
+        reset_password_sent_at:
+          type: string
+          format: date-time
+        remember_created_at:
+          type: string
+          format: date-time
+        sign_in_count:
+          type: number
+        current_sign_in_at:
+          type: string
+          format: date-time
+        last_sign_in_at:
+          type: string
+          format: date-time
+        current_sign_in_ip:
+          type: string
+        last_sign_in_ip:
+          type: string
+        faled_attempts:
+          type: number
+        unlock_token:
+          type: string
+        locked_at:
+          type: string
+          format: date-time
+        gender:
+          type: number
+        email:
+          type: string
+        department_id:
+          type: number
+        email_verified_at:
+          type: string
+          format: date-time
+        tenant_id:
+          type: number
+    Announcement:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
-          example: 10
-        photos:
-          type: array
-          items:
-            type: string
-          example:
-            - sample
-            - example
-    recentReports:
+          type: number
+          example: 1
+        title:
+          type: string
+          example: テスト記事タイトル
+        body:
+          type: string
+          example: テスト記事の見出し
+        published_date:
+          type: string
+          format: date
+          example: '2025-01-26'
+        created_at:
+          type: string
+          format: date-time
+          example: '2025-04-26T17:32:28Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2025-04-26T17:32:28Z'
+    Tag:
       type: object
       properties:
-        id:
-          type: integer
-          format: int64
-          example: 10
-        photos:
+        name:
+          type: string
+          example: Vue.js
+    recentMonthlyReports:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        tags:
           type: array
           items:
-            type: string
-          example:
-            - sample
-            - example
+            $ref: '#/components/schemas/Tag'
+        id:
+          type: number
+          example: 21
+        user_id:
+          type: number
+          example: 13
+        target_month:
+          type: string
+          format: date-time
+          example: '2025-04-26T17:32:28Z'
+        project_summary:
+          type: string
+          example: 概要
+        business_content:
+          type: string
+          example: 内容
+        looking_back:
+          type: string
+          example: 振り返り
+        next_month_goals:
+          type: string
+          example: 来月の目標
+        shipped_at:
+          type: string
+          format: date-time
+          example: '2025-04-26T17:32:28Z'
+        created_at:
+          type: string
+          format: date-time
+          example: '2025-04-26T17:32:28Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2025-04-26T17:32:28Z'
+        assign:
+          type: integer
+          enum:
+            - 1
+            - 2
+          description: |
+            * 1 - 待機中 * 2 - アサイン中
+        is_deleted:
+          type: boolean
+          example: false
+        comments_count:
+          type: number
+          example: 4
+        likes_count:
+          type: number
+          example: 0
     reportsOfFollowingUser:
       type: object
       properties:
+        user:
+          $ref: '#/components/schemas/User'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        id:
+          type: number
+          example: 21
+        user_id:
+          type: number
+          example: 13
+        target_month:
+          type: string
+          format: date-time
+          example: '2025-04-26T17:32:28Z'
+        project_summary:
+          type: string
+          example: 概要
+        business_content:
+          type: string
+          example: 内容
+        looking_back:
+          type: string
+          example: 振り返り
+        next_month_goals:
+          type: string
+          example: 来月の目標
+        shipped_at:
+          type: string
+          format: date-time
+          example: '2025-04-26T17:32:28Z'
+        created_at:
+          type: string
+          format: date-time
+          example: '2025-04-26T17:32:28Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2025-04-26T17:32:28Z'
+        assign:
+          type: integer
+          enum:
+            - 1
+            - 2
+          description: |
+            * 1 - 待機中 * 2 - アサイン中
+        is_deleted:
+          type: boolean
+          example: false
+        comments_count:
+          type: number
+          example: 4
+        likes_count:
+          type: number
+          example: 0
+    Department:
+      type: object
+      properties:
         id:
           type: integer
           format: int64
-          example: 10
-        photos:
-          type: array
-          items:
-            type: string
-          example:
-            - sample
-            - example
+          example: 1
+        name:
+          type: string
+          enum:
+            - PHP
+            - WEB
+            - JAVA
+            - FR
+            - CL
+            - ML
+            - QA
+            - 内勤
+        deleted_at:
+          type: string
+          format: date-time
+          example: '2025-04-27T05:03:42'
+        created_at:
+          type: string
+          format: date-time
+          example: '2025-04-27T05:03:42'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2025-04-27T05:03:42'
+    DepartmentEnum:
+      type: integer
+      enum:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        - 9
+      description: |
+        * 1 - WEB * 2 - CL * 3 - ML * 4 - 内勤 * 5 - 未設定 * 6 - FR * 7 - QA * 8 - PHP
