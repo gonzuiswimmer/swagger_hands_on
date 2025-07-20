@@ -1,0 +1,21 @@
+type: object
+properties:
+  name:
+    type: string
+  email:
+    type: string
+  password:
+    type: string
+  department_id:
+    type: integer
+    nullable: true
+  beginner_flg:
+    type: boolean
+    nullable: true
+  entry_date:
+    type: string
+    format: date
+    nullable: true
+  gender:
+    type: string
+    nullable: true

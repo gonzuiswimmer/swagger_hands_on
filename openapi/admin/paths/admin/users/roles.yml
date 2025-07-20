@@ -2,7 +2,7 @@ get:
   summary: 権限一覧取得
   tags: [管理者]
   security:
-    - bearerAuth: []
+    - BeareAuth: []
   responses:
     "200":
       description: 権限ユーザー一覧
@@ -15,3 +15,5 @@ get:
                 type: array
                 items:
                   $ref: ../../../components/schemas/User.yml
+    "400":
+      $ref: '../../../components/responses/400BadRequest.yml'

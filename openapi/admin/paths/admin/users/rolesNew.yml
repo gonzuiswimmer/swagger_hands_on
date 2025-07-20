@@ -2,7 +2,7 @@
     summary: 権限追加
     tags: [管理者]
     security:
-      - bearerAuth: []
+      - BeareAuth: []
     parameters:
       - name: id
         in: path
@@ -19,3 +19,5 @@
               properties:
                 addAdminUsersRoleResult:
                   type: string
+      "400":
+        $ref: '../../../components/responses/400BadRequest.yml'

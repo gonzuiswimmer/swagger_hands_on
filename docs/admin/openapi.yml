@@ -186,7 +186,7 @@ paths:
       tags:
         - 管理者
       security:
-        - bearerAuth: []
+        - BeareAuth: []
       requestBody:
         required: true
         content:
@@ -206,13 +206,15 @@ paths:
                   message:
                     type: string
                     nullable: true
+        '400':
+          $ref: '#/components/responses/400BadRequest'
   /admin/users/edit/{id}:
     get:
       summary: ユーザー編集情報取得
       tags:
         - 管理者
       security:
-        - bearerAuth: []
+        - BeareAuth: []
       parameters:
         - name: id
           in: path
@@ -239,13 +241,15 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
   /admin/users/update/{id}:
     patch:
       summary: ユーザー情報更新
       tags:
         - 管理者
       security:
-        - bearerAuth: []
+        - BeareAuth: []
       parameters:
         - name: id
           in: path
@@ -271,13 +275,15 @@ paths:
                   message:
                     type: string
                     nullable: true
+        '400':
+          $ref: '#/components/responses/400BadRequest'
   /admin/users/destroy/{id}:
     patch:
       summary: ユーザー削除
       tags:
         - 管理者
       security:
-        - bearerAuth: []
+        - BeareAuth: []
       parameters:
         - name: id
           in: path
@@ -297,13 +303,15 @@ paths:
                   message:
                     type: string
                     nullable: true
+        '400':
+          $ref: '#/components/responses/400BadRequest'
   /admin/users/roles:
     get:
       summary: 権限一覧取得
       tags:
         - 管理者
       security:
-        - bearerAuth: []
+        - BeareAuth: []
       responses:
         '200':
           description: 権限ユーザー一覧
@@ -316,13 +324,15 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
   /admin/users/roles/new/{id}:
     post:
       summary: 権限追加
       tags:
         - 管理者
       security:
-        - bearerAuth: []
+        - BeareAuth: []
       parameters:
         - name: id
           in: path
@@ -339,13 +349,15 @@ paths:
                 properties:
                   addAdminUsersRoleResult:
                     type: string
+        '400':
+          $ref: '#/components/responses/400BadRequest'
   /admin/users/roles/delete/{id}:
     delete:
       summary: 権限削除
       tags:
         - 管理者
       security:
-        - bearerAuth: []
+        - BeareAuth: []
       parameters:
         - name: id
           in: path
@@ -365,6 +377,8 @@ paths:
                   message:
                     type: string
                     nullable: true
+        '400':
+          $ref: '#/components/responses/400BadRequest'
 components:
   securitySchemes:
     BeareAuth:
@@ -630,83 +644,99 @@ components:
       description: |
         * 1 - WEB * 2 - CL * 3 - ML * 4 - 内勤 * 5 - 未設定 * 6 - FR * 7 - QA * 8 - PHP
     UserRegisterRequest:
-      UserRegisterRequest:
-        type: object
-        properties:
-          name:
-            type: string
-          email:
-            type: string
-          password:
-            type: string
-          department_id:
-            type: integer
-            nullable: true
-          beginner_flg:
-            type: boolean
-            nullable: true
-          entry_date:
-            type: string
-            format: date
-            nullable: true
-          gender:
-            type: string
-            nullable: true
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        department_id:
+          type: integer
+          nullable: true
+        beginner_flg:
+          type: boolean
+          nullable: true
+        entry_date:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          type: string
+          nullable: true
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: エラーコード
+        message:
+          type: string
+          description: エラーメッセージ
     UserProfile:
-      UserProfile:
-        type: object
-        properties:
-          user_id:
-            type: integer
-          blood_type:
-            type: integer
-          birthday:
-            type: string
-            format: date
-            nullable: true
-          github_url:
-            type: string
-            nullable: true
-          qiita_url:
-            type: string
-            nullable: true
-          self_introduction:
-            type: string
-            nullable: true
+      type: object
+      properties:
+        user_id:
+          type: integer
+        blood_type:
+          type: integer
+        birthday:
+          type: string
+          format: date
+          nullable: true
+        github_url:
+          type: string
+          nullable: true
+        qiita_url:
+          type: string
+          nullable: true
+        self_introduction:
+          type: string
+          nullable: true
     UserUpdateRequest:
-      UserUpdateRequest:
-        type: object
-        properties:
-          name:
-            type: string
-          department_id:
-            type: integer
-            nullable: true
-          beginner_flg:
-            type: boolean
-            nullable: true
-          email:
-            type: string
-          entry_date:
-            type: string
-            format: date
-            nullable: true
-          gender:
-            type: string
-            nullable: true
-          blood_type:
-            type: integer
-            nullable: true
-          birthday:
-            type: string
-            format: date
-            nullable: true
-          github_url:
-            type: string
-            nullable: true
-          qiita_url:
-            type: string
-            nullable: true
-          self_introduction:
-            type: string
-            nullable: true
+      type: object
+      properties:
+        name:
+          type: string
+        department_id:
+          type: integer
+          nullable: true
+        beginner_flg:
+          type: boolean
+          nullable: true
+        email:
+          type: string
+        entry_date:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          type: string
+          nullable: true
+        blood_type:
+          type: integer
+          nullable: true
+        birthday:
+          type: string
+          format: date
+          nullable: true
+        github_url:
+          type: string
+          nullable: true
+        qiita_url:
+          type: string
+          nullable: true
+        self_introduction:
+          type: string
+          nullable: true
+  responses:
+    400BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: ''
+            message: zzzzは必須です。

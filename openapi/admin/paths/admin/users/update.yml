@@ -2,7 +2,7 @@ patch:
   summary: ユーザー情報更新
   tags: [管理者]
   security:
-    - bearerAuth: []
+    - BeareAuth: []
   parameters:
     - name: id
       in: path
@@ -14,7 +14,7 @@ patch:
     content:
       application/json:
         schema:
-          $ref:  ../../../components/schemas/UserUpdateRequest.yml
+          $ref:  ../../../components/requestBodies/UserUpdateRequest.yml
   responses:
     "200":
       description: 更新結果
@@ -28,3 +28,5 @@ patch:
               message:
                 type: string
                 nullable: true
+    "400":
+      $ref: '../../../components/responses/400BadRequest.yml'

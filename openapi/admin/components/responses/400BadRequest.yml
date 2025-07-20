@@ -1,0 +1,8 @@
+description: Bad Request
+content:
+  application/json:
+    schema:
+      $ref: './Error.yml'
+    example:
+      code: ""
+      message: zzzzは必須です。

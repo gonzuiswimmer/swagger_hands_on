@@ -2,7 +2,7 @@ delete:
   summary: 権限削除
   tags: [管理者]
   security:
-    - bearerAuth: []
+    - BeareAuth: []
   parameters:
     - name: id
       in: path
@@ -22,3 +22,5 @@ delete:
               message:
                 type: string
                 nullable: true
+    "400":
+      $ref: '../../../components/responses/400BadRequest.yml'

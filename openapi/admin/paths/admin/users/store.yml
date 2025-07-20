@@ -2,13 +2,13 @@ post:
   summary: ユーザー新規登録
   tags: [管理者]
   security:
-    - bearerAuth: []
+    - BeareAuth: []
   requestBody:
     required: true
     content:
       application/json:
         schema:
-          $ref: ../../../components/schemas/UserRegisterRequest.yml
+          $ref: ../../../components/requestBodies/UserRegisterRequest.yml
   responses:
     "200":
       description: 登録結果
@@ -22,3 +22,5 @@ post:
               message:
                 type: string
                 nullable: true
+    "400":
+      $ref: '../../../components/responses/400BadRequest.yml'

@@ -1,9 +1,25 @@
 type: object
 properties:
-  user_id:
+  name:
+    type: string
+  department_id:
     type: integer
+    nullable: true
+  beginner_flg:
+    type: boolean
+    nullable: true
+  email:
+    type: string
+  entry_date:
+    type: string
+    format: date
+    nullable: true
+  gender:
+    type: string
+    nullable: true
   blood_type:
     type: integer
+    nullable: true
   birthday:
     type: string
     format: date
