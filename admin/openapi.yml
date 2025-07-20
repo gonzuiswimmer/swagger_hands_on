@@ -1,25 +1,22 @@
 openapi: 3.0.3
 info:
-  title: API Admin
+  title: B-Dash2 API
   version: '1.0'
+  description: hands_on for openapi of B-Dash2
   license:
     name: kazuki_ito
     url: https://gonzuiswimmer.github.io/swagger_hands_on/admin/
 servers:
-  - url: http://localhost:8000/api
-    description: 8001のAPIサーバーテスト
-  - url: http://localhost:8001/api
-    description: 8001のAPIサーバー
-  - url: http://localhost:8002/api
-    description: 8001のAPIサーバー
-  - url: http://localhost:8003/api
-    description: 8001のAPIサーバー
-  - url: http://localhost:8180/admin-mock/api
-    description: adminのモックサーバー
-  - url: http://localhost:8180/admin-agent-mock/api
-    description: admin-agentのモックサーバー
-  - url: http://localhost:8180/order-mock/api
-    description: orderのモックサーバー
+  - url: http://localhost:{port}/api
+    description: local環境のAPIサーバー。cf.8180はモックサーバー(=プロキシサーバー)
+    variables:
+      port:
+        default: '80'
+        enum:
+          - '80'
+          - 8180/admin-mock
+  - url: https://xxx-admin/api
+    description: 開発環境のAPIサーバー
 tags:
   - name: health-check
     description: 動作確認用API
@@ -83,10 +80,10 @@ paths:
                         $ref: '#/components/schemas/Announcement'
                     - type: array
                       items:
-                        $ref: '#/components/schemas/recentMonthlyReports'
+                        $ref: '#/components/schemas/RecentMonthlyReports'
                     - type: array
                       items:
-                        $ref: '#/components/schemas/reportsOfFollowingUser'
+                        $ref: '#/components/schemas/ReportsOfFollowingUser'
         '400':
           description: Error
   /getDepartments:
@@ -118,24 +115,29 @@ paths:
       summary: ユーザー検索/一覧画面表示時にuserListを返す
       description: ユーザー検索/一覧画面表示時にuserListを返す
       security: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                status:
-                  type: string
-                  enum:
-                    - retired
-                    - working
-                name:
-                  type: string
-                  example: 佐藤
-                hiredMonth:
-                  type: string
-                  format: date-time
-                department:
-                  $ref: '#/components/schemas/DepartmentEnum'
+      parameters:
+        - in: query
+          name: user_status
+          schema:
+            type: string
+            enum:
+              - retired
+              - working
+        - in: query
+          name: user_name
+          schema:
+            type: string
+            example: 佐藤
+        - in: query
+          name: hiredMonth
+          schema:
+            type: string
+            format: date-time
+            example: '2025-06-30T15:00:00.000Z'
+        - in: query
+          name: department
+          schema:
+            $ref: '#/components/schemas/DepartmentEnum'
       responses:
         '200':
           description: OK
@@ -178,6 +180,205 @@ paths:
                       example: 92
         '400':
           description: Error
+  /admin/users/store:
+    post:
+      summary: ユーザー新規登録
+      tags:
+        - 管理者
+      security:
+        - BeareAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegisterRequest'
+      responses:
+        '200':
+          description: 登録結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  CreateUserResult:
+                    type: boolean
+                  message:
+                    type: string
+                    nullable: true
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+  /admin/users/edit/{id}:
+    get:
+      summary: ユーザー編集情報取得
+      tags:
+        - 管理者
+      security:
+        - BeareAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 編集情報
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  user_profile:
+                    $ref: '#/components/schemas/UserProfile'
+                  followings:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                  followers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+  /admin/users/update/{id}:
+    patch:
+      summary: ユーザー情報更新
+      tags:
+        - 管理者
+      security:
+        - BeareAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateRequest'
+      responses:
+        '200':
+          description: 更新結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  UpdateUserResult:
+                    type: boolean
+                  message:
+                    type: string
+                    nullable: true
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+  /admin/users/destroy/{id}:
+    patch:
+      summary: ユーザー削除
+      tags:
+        - 管理者
+      security:
+        - BeareAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 削除結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  DestroyUserResult:
+                    type: boolean
+                  message:
+                    type: string
+                    nullable: true
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+  /admin/users/roles:
+    get:
+      summary: 権限一覧取得
+      tags:
+        - 管理者
+      security:
+        - BeareAuth: []
+      responses:
+        '200':
+          description: 権限ユーザー一覧
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+  /admin/users/roles/new/{id}:
+    post:
+      summary: 権限追加
+      tags:
+        - 管理者
+      security:
+        - BeareAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 追加結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  addAdminUsersRoleResult:
+                    type: string
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+  /admin/users/roles/delete/{id}:
+    delete:
+      summary: 権限削除
+      tags:
+        - 管理者
+      security:
+        - BeareAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 削除結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  destroyAdminUserRoleResult:
+                    type: boolean
+                  message:
+                    type: string
+                    nullable: true
+        '400':
+          $ref: '#/components/responses/400BadRequest'
 components:
   securitySchemes:
     BeareAuth:
@@ -280,7 +481,7 @@ components:
         name:
           type: string
           example: Vue.js
-    recentMonthlyReports:
+    RecentMonthlyReports:
       type: object
       properties:
         user:
@@ -339,7 +540,7 @@ components:
         likes_count:
           type: number
           example: 0
-    reportsOfFollowingUser:
+    ReportsOfFollowingUser:
       type: object
       properties:
         user:
@@ -442,3 +643,100 @@ components:
         - 9
       description: |
         * 1 - WEB * 2 - CL * 3 - ML * 4 - 内勤 * 5 - 未設定 * 6 - FR * 7 - QA * 8 - PHP
+    UserRegisterRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        department_id:
+          type: integer
+          nullable: true
+        beginner_flg:
+          type: boolean
+          nullable: true
+        entry_date:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          type: string
+          nullable: true
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: エラーコード
+        message:
+          type: string
+          description: エラーメッセージ
+    UserProfile:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        blood_type:
+          type: integer
+        birthday:
+          type: string
+          format: date
+          nullable: true
+        github_url:
+          type: string
+          nullable: true
+        qiita_url:
+          type: string
+          nullable: true
+        self_introduction:
+          type: string
+          nullable: true
+    UserUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        department_id:
+          type: integer
+          nullable: true
+        beginner_flg:
+          type: boolean
+          nullable: true
+        email:
+          type: string
+        entry_date:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          type: string
+          nullable: true
+        blood_type:
+          type: integer
+          nullable: true
+        birthday:
+          type: string
+          format: date
+          nullable: true
+        github_url:
+          type: string
+          nullable: true
+        qiita_url:
+          type: string
+          nullable: true
+        self_introduction:
+          type: string
+          nullable: true
+  responses:
+    400BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: ''
+            message: zzzzは必須です。
