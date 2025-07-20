@@ -18,21 +18,31 @@ servers:
   - url: https://xxx-admin/api
     description: 開発環境のAPIサーバー
 tags:
-  - name: health-check
+  - name: healthCheck
     description: 動作確認用API
-  - name: admin-users
-    description: 管理/ユーザー系API
-  - name: admin-announcement
-    description: 管理/お知らせ系API
-  - name: admin-inquiry
-    description: 管理/問い合わせ系API
+  - name: auth
+    description: 認証系API
+  - name: user
+    description: 一般ユーザー系API
+  - name: top
+    description: top画面系API
+  - name: department
+    description: 部署系API
+  - name: adminUser
+    description: 管理者向けユーザー制御系API
+  - name: adminUserAnnouncement
+    description: 管理者向けお知らせ系API
+  - name: adnimuserInquiry
+    description: 管理者向け問い合わせ系API
+  - name: adminUserRole
+    description: 管理者向けロール制御系API
 paths:
   /health-check:
     get:
       summary: test for first api specification
       security: []
       tags:
-        - health-check
+        - healthCheck
       responses:
         '200':
           description: OK
@@ -111,7 +121,7 @@ paths:
   /admin/users:
     get:
       tags:
-        - admin-users
+        - adminUser
       summary: ユーザー検索/一覧画面表示時にuserListを返す
       description: ユーザー検索/一覧画面表示時にuserListを返す
       security: []
@@ -184,7 +194,7 @@ paths:
     post:
       summary: ユーザー新規登録
       tags:
-        - 管理者
+        - adminUser
       security:
         - BeareAuth: []
       requestBody:
@@ -212,7 +222,7 @@ paths:
     get:
       summary: ユーザー編集情報取得
       tags:
-        - 管理者
+        - adminUser
       security:
         - BeareAuth: []
       parameters:
@@ -247,7 +257,7 @@ paths:
     patch:
       summary: ユーザー情報更新
       tags:
-        - 管理者
+        - adminUser
       security:
         - BeareAuth: []
       parameters:
@@ -281,7 +291,7 @@ paths:
     patch:
       summary: ユーザー削除
       tags:
-        - 管理者
+        - adminUser
       security:
         - BeareAuth: []
       parameters:
@@ -309,7 +319,7 @@ paths:
     get:
       summary: 権限一覧取得
       tags:
-        - 管理者
+        - adminUserRole
       security:
         - BeareAuth: []
       responses:
@@ -330,7 +340,7 @@ paths:
     post:
       summary: 権限追加
       tags:
-        - 管理者
+        - adminUserRole
       security:
         - BeareAuth: []
       parameters:
@@ -355,7 +365,7 @@ paths:
     delete:
       summary: 権限削除
       tags:
-        - 管理者
+        - adminUserRole
       security:
         - BeareAuth: []
       parameters:
