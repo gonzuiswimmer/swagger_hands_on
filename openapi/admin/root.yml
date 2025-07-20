@@ -1,7 +1,8 @@
 openapi: "3.0.3"
 info:
-  title: API Admin
+  title: B-Dash2 API
   version: "1.0"
+  description: hands_on for openapi of B-Dash2
   license:
     name: kazuki_ito
     url: https://gonzuiswimmer.github.io/swagger_hands_on/admin/
@@ -24,20 +25,14 @@ tags:
     description: 管理/問い合わせ系API
 
 servers:
-  - url: http://localhost:8000/api
-    description: 8001のAPIサーバーテスト
-  - url: http://localhost:8001/api
-    description: 8001のAPIサーバー
-  - url: http://localhost:8002/api
-    description: 8001のAPIサーバー
-  - url: http://localhost:8003/api
-    description: 8001のAPIサーバー
-  - url: http://localhost:8180/admin-mock/api
-    description: adminのモックサーバー
-  - url: http://localhost:8180/admin-agent-mock/api
-    description: admin-agentのモックサーバー
-  - url: http://localhost:8180/order-mock/api
-    description: orderのモックサーバー
+  - url: http://localhost:{port}/api
+    description: local環境のAPIサーバー。cf.8180はモックサーバー(=プロキシサーバー)
+    variables:
+      port:
+        default: "80"
+        enum: ["80", "8180/admin-mock"]
+  - url: https://xxx-admin/api
+    description: 開発環境のAPIサーバー
 
 paths:
   /health-check:
@@ -59,3 +54,17 @@ paths:
     $ref: ./paths/getDepartments.yml
   /admin/users:
     $ref: ./paths/admin/users/index.yml
+  /admin/users/store:
+    $ref: ./paths/admin/users/store.yml
+  /admin/users/edit/{id}:
+    $ref: ./paths/admin/users/edit.yml
+  /admin/users/update/{id}:
+    $ref: ./paths/admin/users/update.yml
+  /admin/users/destroy/{id}:
+    $ref: ./paths/admin/users/destroy.yml
+  /admin/users/roles:
+    $ref: ./paths/admin/users/roles.yml
+  /admin/users/roles/new/{id}:
+    $ref: ./paths/admin/users/rolesNew.yml
+  /admin/users/roles/delete/{id}:
+    $ref: ./paths/admin/users/rolesDelete.yml

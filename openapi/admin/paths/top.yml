@@ -23,9 +23,9 @@ post:
                     $ref: ../components/schemas/Announcement.yml
                 - type: array
                   items:
-                    $ref: ../components/recentMonthlyReports.yml
+                    $ref: ../components/schemas/RecentMonthlyReports.yml
                 - type: array
                   items:
-                    $ref: ../components/reportsOfFollowingUser.yml
+                    $ref: ../components/schemas/ReportsOfFollowingUser.yml
     "400":
       description: "Error"

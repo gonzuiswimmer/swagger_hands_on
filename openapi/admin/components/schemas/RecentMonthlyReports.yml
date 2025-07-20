@@ -1,11 +1,11 @@
 type: object
 properties:
   user:
-    $ref: ../components/schemas/User.yml
+    $ref: ./User.yml
   tags:
     type: array
     items:
-      $ref: ../components/schemas/Tag.yml
+      $ref: ./Tag.yml
   id:
     type: number
     example: 21

@@ -1,0 +1,20 @@
+UserProfile:
+  type: object
+  properties:
+    user_id:
+      type: integer
+    blood_type:
+      type: integer
+    birthday:
+      type: string
+      format: date
+      nullable: true
+    github_url:
+      type: string
+      nullable: true
+    qiita_url:
+      type: string
+      nullable: true
+    self_introduction:
+      type: string
+      nullable: true

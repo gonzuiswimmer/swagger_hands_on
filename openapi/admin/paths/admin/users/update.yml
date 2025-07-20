@@ -1,23 +1,29 @@
-post:
-  summary: ユーザー新規登録
+patch:
+  summary: ユーザー情報更新
   tags: [管理者]
   security:
     - bearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
   requestBody:
     required: true
     content:
       application/json:
         schema:
-          $ref: ../../../components/schemas/UserRegisterRequest.yml
+          $ref:  ../../../components/schemas/UserUpdateRequest.yml
   responses:
     "200":
-      description: 登録結果
+      description: 更新結果
       content:
         application/json:
           schema:
             type: object
             properties:
-              CreateUserResult:
+              UpdateUserResult:
                 type: boolean
               message:
                 type: string
