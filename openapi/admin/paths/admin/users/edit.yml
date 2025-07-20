@@ -1,6 +1,6 @@
 get:
   summary: ユーザー編集情報取得
-  tags: [管理者]
+  tags: [adminUser]
   security:
     - BeareAuth: []
   parameters:

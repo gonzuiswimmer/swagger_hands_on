@@ -1,6 +1,6 @@
 post:
   summary: ユーザー新規登録
-  tags: [管理者]
+  tags: [adminUser]
   security:
     - BeareAuth: []
   requestBody:

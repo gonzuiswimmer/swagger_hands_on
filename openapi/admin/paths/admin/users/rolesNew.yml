@@ -1,6 +1,6 @@
   post:
     summary: 権限追加
-    tags: [管理者]
+    tags: [adminUserRole]
     security:
       - BeareAuth: []
     parameters:

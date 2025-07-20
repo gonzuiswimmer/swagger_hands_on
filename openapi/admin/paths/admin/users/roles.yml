@@ -1,6 +1,6 @@
 get:
   summary: 権限一覧取得
-  tags: [管理者]
+  tags: [adminUserRole]
   security:
     - BeareAuth: []
   responses:

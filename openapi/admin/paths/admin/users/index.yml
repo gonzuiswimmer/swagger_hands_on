@@ -1,6 +1,6 @@
 get:
   tags:
-    - admin-users
+    - adminUser
   summary: ユーザー検索/一覧画面表示時にuserListを返す
   description: ユーザー検索/一覧画面表示時にuserListを返す
   security: []

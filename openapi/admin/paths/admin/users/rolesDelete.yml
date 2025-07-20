@@ -1,6 +1,6 @@
 delete:
   summary: 権限削除
-  tags: [管理者]
+  tags: [adminUserRole]
   security:
     - BeareAuth: []
   parameters:

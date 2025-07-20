@@ -15,14 +15,24 @@ components:
       bearerFormat: JWT
 
 tags:
-  - name: health-check
+  - name: healthCheck
     description: 動作確認用API
-  - name: admin-users
-    description: 管理/ユーザー系API
-  - name: admin-announcement
-    description: 管理/お知らせ系API
-  - name: admin-inquiry
-    description: 管理/問い合わせ系API
+  - name: auth
+    description: 認証系API
+  - name: user
+    description: 一般ユーザー系API
+  - name: top
+    description: top画面系API
+  - name: department
+    description: 部署系API
+  - name: adminUser
+    description: 管理者向けユーザー制御系API
+  - name: adminUserAnnouncement
+    description: 管理者向けお知らせ系API
+  - name: adnimuserInquiry
+    description: 管理者向け問い合わせ系API
+  - name: adminUserRole
+    description: 管理者向けロール制御系API
 
 servers:
   - url: http://localhost:{port}/api
@@ -40,7 +50,7 @@ paths:
       summary: test for first api specification
       security: []
       tags:
-        - health-check
+        - healthCheck
       responses:
         "200":
           description: OK

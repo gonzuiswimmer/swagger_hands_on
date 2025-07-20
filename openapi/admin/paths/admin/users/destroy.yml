@@ -1,6 +1,6 @@
 patch:
   summary: ユーザー削除
-  tags: [管理者]
+  tags: [adminUser]
   security:
     - BeareAuth: []
   parameters:
