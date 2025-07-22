@@ -20,4 +20,4 @@
                 addAdminUsersRoleResult:
                   type: string
       "400":
-        $ref: '../../../components/responses/400BadRequest.yml'
+        $ref: '../../../components/responses/Errors.yml#/400BadRequestError'

@@ -23,4 +23,4 @@ patch:
                 type: string
                 nullable: true
     "400":
-      $ref: '../../../components/responses/400BadRequest.yml'
+      $ref: '../../../components/responses/Errors.yml#/400BadRequestError'

@@ -19,4 +19,4 @@ get:
             items:
               $ref: ../components/schemas/Department.yml
     "400":
-      description: "Error"
+      $ref: '../components/responses/Errors.yml#/400BadRequestError'

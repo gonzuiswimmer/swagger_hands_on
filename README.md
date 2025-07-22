@@ -22,30 +22,31 @@
 2. [環境](#環境)
 3. [ディレクトリ構成](#ディレクトリ構成)
 4. [開発環境構築](#開発環境構築)
-5. [トラブルシューティング](#トラブルシューティング)
+5. [運用ルール](#運用ルール)
+6. [トラブルシューティング](#トラブルシューティング)
 
 <!-- READMEの作成方法のドキュメントのリンク -->
 <br />
 <div align="right">
-    <a href="READMEの作成方法のリンク"><strong>READMEの作成方法 »</strong></a>
+    <a href="#"><strong>READMEの作成方法 »</strong>※準備中</a>
 </div>
 <br />
 <!-- Dockerfileのドキュメントのリンク -->
 <div align="right">
-    <a href="Dockerfileの詳細リンク"><strong>Dockerfileの詳細 »</strong></a>
+    <a href="#"><strong>Dockerfileの詳細 »</strong>※準備中</a>
 </div>
 <br />
 <!-- プロジェクト名を記載 -->
 
 ## プロジェクト名
 
-OpenAPi Docs
+OpenAPI Docs
 
 <!-- プロジェクトについて -->
 
 ## プロジェクトについて
 
-OpenApi に基づいた API 仕様書を記述し、ホットリロードによって自動更新します。更新した API 仕様書は web サーバーで確認したり、mock サーバーで挙動を確認したりできます。</br>
+OpenAPI に基づいた API 仕様書を記述し、ホットリロードによって自動更新します。更新した API 仕様書は web サーバーで確認したり、mock サーバーで挙動を確認したりできます。</br>
 また、GithubActions と GithubPages を活用して API 仕様書を自動的に公開することで開発効率の向上を図ることができます。
 
 <!-- プロジェクトの概要を記載 -->
@@ -84,13 +85,10 @@ OpenApi に基づいた API 仕様書を記述し、ホットリロードによ�
 ├── docker-compose.yml
 ├── docs                              # API仕様書が格納されているディレクトリ。自動生成されたファイルが出力される
 │   ├── admin
-│   │   ├── index.html
 │   │   └── openapi.yml
 │   ├── admin-agent
-│   │   ├── index.html
 │   │   └── openapi.yml
 │   └── order
-│       ├── index.html
 │       └── openapi.yml
 ├── lint.sh                           # root.ymlに対して静的解析を実施するスクリプト
 ├── merge.sh                          # API仕様書のymlファイルを生成するスクリプト
@@ -166,14 +164,19 @@ API を投げるとモックサーバーへ API 通信が投げられるので�
 ### ホットリロードによる API 仕様書の開発
 
 `watch-bundle.js`を動かすことによって、openapi 配下のディレクトリを監視し、変更があった場合は自動で分割された yml ファイルを 結合 してくれます。
+結合されたファイルは`docs/***/openapi.yml`に出力されます。
 
 - chokidar のインストール
 
-`npm install -g chokidar`
+```bash
+npm install -g chokidar
+```
 
 - watch-bundle.js の起動
 
-`node watch-bundle.js`
+```bash
+node watch-bundle.js
+```
 
 ### シェルスクリプト（lint / merge / build）
 
@@ -182,18 +185,32 @@ watch-bundle.js を起動している場合は自動で結合した yml ファ�
 
 - lint
 
-  `./lint.sh $arg1 $arg2 $arg3`
+```bash
+./lint.sh $arg1 $arg2 $arg3
+```
 
 - merge
 
-  `./merge.sh $arg1 $arg2 $arg3`
+```bash
+./merge.sh $arg1 $arg2 $arg3
+```
 
 - bundle（html ファイルの生成）
 
-  `./bundle.sh $arg1 $arg2 $arg3`
+```bash
+./bundle.sh $arg1 $arg2 $arg3
+```
 
 ※ シェルスクリプト実行時には、対象となるディレクトリ名を引数として 3 つまで指定できます。</br>
-本プロジェクトでは、order, admin, admin-agent から指定できます。引数が未指定の時は 3 つの引数が自動的に指定されます。
+本プロジェクトでは、`order`, `admin`, `admin-agent` のいずれかを指定できます。引数が未指定の時は 3 つの引数が自動的に指定されます。
+
+## 運用ルール
+
+### ディレクトリ構成
+- components
+配下に`examples`, `headers`, `parameters`, `requestBodies`, `responses`, `schemas`を持つ。
+それぞれのディレクトリ内でのファイル分割はドメイン単位を原則として最小限とし、相対パス参照のミスを防ぐために1階層（=1ディレクトリ）までとする。
+例）responses/Error.ymlファイル内にそれぞれのエラーコードごとの定義をまとめて記載する。ファイル分割は行わない
 
 ## トラブルシューティング
 
@@ -201,7 +218,9 @@ watch-bundle.js を起動している場合は自動で結合した yml ファ�
 
 権限がないとシェルスクリプトが実行できません。下記コマンドでシェルスクリプトファイルに実行権限を与えてください
 
-`chmod +x hoge.sh`
+```bash
+chmod +x hoge.sh
+```
 
 ### docker daemon is not running
 

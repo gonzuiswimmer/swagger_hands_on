@@ -28,4 +28,4 @@ post:
                   items:
                     $ref: ../components/schemas/ReportsOfFollowingUser.yml
     "400":
-      description: "Error"
+      $ref: '../components/responses/Errors.yml#/400BadRequestError'

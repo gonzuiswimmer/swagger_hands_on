@@ -1,0 +1,10 @@
+get:
+  summary: test for first api specification
+  security: []
+  tags:
+    - healthCheck
+  responses:
+    "200":
+      $ref: '../components/responses/Success.yml#/NoContentResponse'
+    "400":
+      $ref: '../components/responses/Errors.yml#/400BadRequestError'

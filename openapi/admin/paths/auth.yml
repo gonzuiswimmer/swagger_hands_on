@@ -1,0 +1,51 @@
+login:
+  post:
+    tags:
+      - auth
+    summary: ログイン
+    security: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/requestBodies/auth/LoginRequest.yml'
+    responses:
+      "200":
+        description: ログイン成功
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                  description: ロール
+                  example: "admin"
+      "422":
+        $ref: '../components/responses/Errors.yml#/422UnprocessableContentError'
+      "403":
+        $ref: '../components/responses/Errors.yml#/403ForbiddenError'
+
+logout:
+  post:
+    tags:
+      - auth
+    summary: ログアウト
+    security: []
+    responses:
+      "200":
+        description: ログアウト成功
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: ログアウト成功メッセージ
+                  example: "Logged out"
+      "403":
+        $ref: '../components/responses/Errors.yml#/403ForbiddenError'
+      "500":
+        $ref: '../components/responses/Errors.yml#/500InternalServerError'

@@ -31,4 +31,4 @@ get:
                   $ref: ../../../components/schemas/User.yml
 
     "400":
-      $ref: '../../../components/responses/400BadRequest.yml'
+      $ref: '../../../components/responses/Errors.yml#/400BadRequestError'

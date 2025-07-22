@@ -1,0 +1,310 @@
+400BadRequestError:
+  description: リクエストが不正です
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      example:
+        # code: BAD_REQUEST
+        message: リクエストパラメータが不正です
+
+400InvalidArgumentError:
+  description: クライアント が無効な引数を指定しました
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      example:
+        # code: INVALID_ARGUMENT
+        message: リクエスト フィールド x.y.z は xxx です。[yyy、zzz] のいずれかが必要です。
+
+422UnprocessableContentError:
+  description: クライアントが無効な引数を指定しました
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      example:
+        # code: UNPROCESSABLE_CONTENT
+        message: バリデーションエラーです。
+
+# FailedPreconditionError:
+#   description: 現在のシステム状態ではリクエストを実行できません
+#   content:
+#     application/json:
+#       schema:
+#         $ref: '../schemas/Error.yml'
+#       example:
+#         code: FAILED_PRECONDITION
+#         message: リソース xxx は空でないディレクトリであるため、削除することはできません。
+
+# OutOfRangeError:
+#   description: クライアントが無効な範囲を指定しました
+#   content:
+#     application/json:
+#       schema:
+#         $ref: '../schemas/Error.yml'
+#       example:
+#         code: OUT_OF_RANGE
+#         message: パラメータ「age」は [0、125] の範囲外です。
+
+401UnauthorizedError:
+  description: 認証に失敗しました
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      example:
+        # code: UNAUTHORIZED
+        message: 認証に失敗しました
+
+# UnauthenticatedError:
+#   description: リクエストが認証されませんでした
+#   content:
+#     application/json:
+#       schema:
+#         $ref: '../schemas/Error.yml'
+#       example:
+#         code: UNAUTHENTICATED
+#         message: 無効な認証情報。
+
+403ForbiddenError:
+  description: アクセス権限がありません
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      example:
+        # code: FORBIDDEN
+        message: このリソースにアクセスする権限がありません
+
+# PermissionDeniedError:
+#   description: クライアントに十分な権限がありません
+#   content:
+#     application/json:
+#       schema:
+#         $ref: '../schemas/Error.yml'
+#       example:
+#         code: PERMISSION_DENIED
+#         message: 許可「xxx」がリソース「yyy」に対して拒否されました。
+
+404NotFoundError:
+  description: リソースが見つかりません
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      example:
+        # code: NOT_FOUND
+        message: リソース「xxx」が見つかりません。
+
+# AbortedError:
+#   description: 同時実行の競合が発生しました
+#   content:
+#     application/json:
+#       schema:
+#         $ref: '../schemas/Error.yml'
+#       example:
+#         code: ABORTED
+#         message: リソース「xxx」のロックを取得できませんでした。
+
+# AlreadyExistsError:
+#   description: リソースがすでに存在します
+#   content:
+#     application/json:
+#       schema:
+#         $ref: '../schemas/Error.yml'
+#       example:
+#         code: ALREADY_EXISTS
+#         message: リソース「xxx」はすでに存在します。
+
+# RateLimitExceededError:
+#   description: APIリクエスト制限を超過しました
+#   headers:
+#     X-RateLimit-Limit:
+#       schema:
+#         type: integer
+#       description: 制限期間内の最大リクエスト数
+#     X-RateLimit-Remaining:
+#       schema:
+#         type: integer
+#       description: 現在の期間内で残っているリクエスト数
+#     X-RateLimit-Reset:
+#       schema:
+#         type: integer
+#       description: 制限がリセットされる時間（UNIXタイムスタンプ）
+#   content:
+#     application/json:
+#       schema:
+#         $ref: '#/components/schemas/RateLimitError'
+#       example:
+#         code: RATE_LIMIT_EXCEEDED
+#         message: APIリクエスト制限を超過しました
+#         details:
+#           retryAfter: 60
+#           limit: 100
+#           remaining: 0
+#           reset: 1619788800
+
+# ResourceExhaustedError:
+#   description: リソース割り当てが不足しているか、レート制限に達しています
+#   content:
+#     application/json:
+#       schema:
+#         $ref: '../schemas/Error.yml'
+#       example:
+#         code: RESOURCE_EXHAUSTED
+#         message: 割り当て制限「xxx」を超えました。
+
+# CancelledError:
+#   description: リクエストはクライアントによってキャンセルされました
+#   content:
+#     application/json:
+#       schema:
+#         $ref: '../schemas/Error.yml'
+#       example:
+#         code: CANCELLED
+#         message: リクエストはクライアントによってキャンセルされました。
+
+# DataLossError:
+#   description: 復元できないデータ損失またはデータ破損が発生しました
+#   content:
+#     application/json:
+#       schema:
+#         $ref: '../schemas/Error.yml'
+#       example:
+#         code: DATA_LOSS
+#         message: データ損失が発生しました。詳細はサーバーログを確認してください。
+
+# UnknownError:
+#   description: 不明なサーバーエラーが発生しました
+#   content:
+#     application/json:
+#       schema:
+#         $ref: '../schemas/Error.yml'
+#       example:
+#         code: UNKNOWN
+#         message: 不明なエラーが発生しました。詳細はサーバーログを確認してください。
+
+500InternalServerError:
+  description: サーバー内部でエラーが発生しました
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      example:
+        # code: INTERNAL_SERVER_ERROR
+        message: 内部サーバーエラーが発生しました。詳細はサーバーログを確認してください。
+
+# NotImplementedError:
+#   description: API メソッドはサーバーによって実装されていません
+#   content:
+#     application/json:
+#       schema:
+#         $ref: '../schemas/Error.yml'
+#       example:
+#         code: NOT_IMPLEMENTED
+#         message: メソッド「xxx」は実装されていません。
+
+# UnavailableError:
+#   description: サービスが利用できません
+#   content:
+#     application/json:
+#       schema:
+#         $ref: '../schemas/Error.yml'
+#       example:
+#         code: UNAVAILABLE
+#         message: サービスが一時的に利用できません。後ほど再試行してください。
+
+# DeadlineExceededError:
+#   description: リクエスト期限を超えました
+#   content:
+#     application/json:
+#       schema:
+#         $ref: '../schemas/Error.yml'
+#       example:
+#         code: DEADLINE_EXCEEDED
+#         message: リクエストの処理に時間がかかりすぎました。後ほど再試行してください。
+
+# components:
+# schemas:
+#   SuccessResponse:
+#     type: object
+#     required:
+#       - code
+#       - message
+#     properties:
+#       code:
+#         type: string
+#         description: 成功コード
+#       message:
+#         type: string
+#         description: 成功メッセージ
+
+#   Error:
+#     type: object
+#     required:
+#       - code
+#       - message
+#     properties:
+#       code:
+#         type: string
+#         description: エラーコード
+#       message:
+#         type: string
+#         description: エラーメッセージ
+#       details:
+#         type: object
+#         description: 追加のエラー詳細情報
+
+#   RateLimitError:
+#     type: object
+#     required:
+#       - code
+#       - message
+#       - details
+#     properties:
+#       code:
+#         type: string
+#         description: エラーコード
+#       message:
+#         type: string
+#         description: エラーメッセージ
+#       details:
+#         type: object
+#         required:
+#           - retryAfter
+#           - limit
+#           - remaining
+#           - reset
+#         properties:
+#           retryAfter:
+#             type: integer
+#             description: リクエストを再試行するまでの待機時間（秒）
+#           limit:
+#             type: integer
+#             description: 制限期間内の最大リクエスト数
+#           remaining:
+#             type: integer
+#             description: 現在の期間内で残っているリクエスト数
+#           reset:
+#             type: integer
+#             description: 制限がリセットされる時間（UNIXタイムスタンプ）
+
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+        # - code
+        - message
+      properties:
+        code:
+          type: string
+          description: エラーコード
+        message:
+          type: string
+          description: エラーメッセージ
+        details:
+          type: object
+          description: 追加のエラー詳細情報

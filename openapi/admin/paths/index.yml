@@ -1,0 +1,28 @@
+/health-check:
+  $ref: ./health-check.yml
+/auth/login:
+  $ref: ./auth.yml#/login
+/auth/logout:
+  $ref: ./auth.yml#/logout
+/user:
+  $ref: ./user.yml
+/top:
+  $ref: ./top.yml
+/getDepartments:
+  $ref: ./getDepartments.yml
+/admin/users:
+  $ref: ./admin/users/index.yml
+/admin/users/store:
+  $ref: ./admin/users/store.yml
+/admin/users/edit/{id}:
+  $ref: ./admin/users/edit.yml
+/admin/users/update/{id}:
+  $ref: ./admin/users/update.yml
+/admin/users/destroy/{id}:
+  $ref: ./admin/users/destroy.yml
+/admin/users/roles:
+  $ref: ./admin/users/roles.yml
+/admin/users/roles/new/{id}:
+  $ref: ./admin/users/rolesNew.yml
+/admin/users/roles/delete/{id}:
+  $ref: ./admin/users/rolesDelete.yml

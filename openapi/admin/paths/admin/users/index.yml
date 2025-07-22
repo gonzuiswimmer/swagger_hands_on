@@ -24,7 +24,7 @@ get:
     - in: query
       name: department
       schema:
-        $ref: ../../../components/schemas/Enum/DepartmentEnum.yml
+        $ref: ../../../components/schemas/Enum.yml#/DepartmentEnum
 
   responses:
     "200":
@@ -68,4 +68,4 @@ get:
                   type: integer
                   example: 92
     "400":
-      description: Error
+      $ref: '../../../components/responses/Errors.yml#/400BadRequestError'

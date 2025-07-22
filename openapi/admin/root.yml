@@ -7,13 +7,6 @@ info:
     name: kazuki_ito
     url: https://gonzuiswimmer.github.io/swagger_hands_on/admin/
 
-components:
-  securitySchemes:
-    BeareAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-
 tags:
   - name: healthCheck
     description: 動作確認用API
@@ -45,36 +38,11 @@ servers:
     description: 開発環境のAPIサーバー
 
 paths:
-  /health-check:
-    get:
-      summary: test for first api specification
-      security: []
-      tags:
-        - healthCheck
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: "Error"
-  /user:
-    $ref: ./paths/user.yml
-  /top:
-    $ref: ./paths/top.yml
-  /getDepartments:
-    $ref: ./paths/getDepartments.yml
-  /admin/users:
-    $ref: ./paths/admin/users/index.yml
-  /admin/users/store:
-    $ref: ./paths/admin/users/store.yml
-  /admin/users/edit/{id}:
-    $ref: ./paths/admin/users/edit.yml
-  /admin/users/update/{id}:
-    $ref: ./paths/admin/users/update.yml
-  /admin/users/destroy/{id}:
-    $ref: ./paths/admin/users/destroy.yml
-  /admin/users/roles:
-    $ref: ./paths/admin/users/roles.yml
-  /admin/users/roles/new/{id}:
-    $ref: ./paths/admin/users/rolesNew.yml
-  /admin/users/roles/delete/{id}:
-    $ref: ./paths/admin/users/rolesDelete.yml
+  $ref: ./paths/index.yml
+
+components:
+  securitySchemes:
+    BeareAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
