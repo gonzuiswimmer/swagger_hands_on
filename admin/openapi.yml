@@ -45,9 +45,59 @@ paths:
         - healthCheck
       responses:
         '200':
-          description: OK
+          $ref: '#/components/responses/NoContentResponse'
         '400':
-          description: Error
+          $ref: '#/components/responses/400BadRequestError'
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: ログイン
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: ログイン成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  role:
+                    type: string
+                    description: ロール
+                    example: admin
+        '403':
+          $ref: '#/components/responses/403ForbiddenError'
+        '422':
+          $ref: '#/components/responses/422UnprocessableContentError'
+  /auth/logout:
+    post:
+      tags:
+        - auth
+      summary: ログアウト
+      security: []
+      responses:
+        '200':
+          description: ログアウト成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: ログアウト成功メッセージ
+                    example: Logged out
+        '403':
+          $ref: '#/components/responses/403ForbiddenError'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
   /user:
     get:
       tags:
@@ -64,7 +114,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/User'
         '400':
-          description: Error
+          $ref: '#/components/responses/400BadRequestError'
   /top:
     post:
       tags:
@@ -95,7 +145,7 @@ paths:
                       items:
                         $ref: '#/components/schemas/ReportsOfFollowingUser'
         '400':
-          description: Error
+          $ref: '#/components/responses/400BadRequestError'
   /getDepartments:
     get:
       tags:
@@ -117,7 +167,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Department'
         '400':
-          description: Error
+          $ref: '#/components/responses/400BadRequestError'
   /admin/users:
     get:
       tags:
@@ -189,7 +239,7 @@ paths:
                       type: integer
                       example: 92
         '400':
-          description: Error
+          $ref: '#/components/responses/400BadRequestError'
   /admin/users/store:
     post:
       summary: ユーザー新規登録
@@ -217,7 +267,7 @@ paths:
                     type: string
                     nullable: true
         '400':
-          $ref: '#/components/responses/400BadRequest'
+          $ref: '#/components/responses/400BadRequestError'
   /admin/users/edit/{id}:
     get:
       summary: ユーザー編集情報取得
@@ -252,7 +302,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/User'
         '400':
-          $ref: '#/components/responses/400BadRequest'
+          $ref: '#/components/responses/400BadRequestError'
   /admin/users/update/{id}:
     patch:
       summary: ユーザー情報更新
@@ -286,7 +336,7 @@ paths:
                     type: string
                     nullable: true
         '400':
-          $ref: '#/components/responses/400BadRequest'
+          $ref: '#/components/responses/400BadRequestError'
   /admin/users/destroy/{id}:
     patch:
       summary: ユーザー削除
@@ -314,7 +364,7 @@ paths:
                     type: string
                     nullable: true
         '400':
-          $ref: '#/components/responses/400BadRequest'
+          $ref: '#/components/responses/400BadRequestError'
   /admin/users/roles:
     get:
       summary: 権限一覧取得
@@ -335,7 +385,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/User'
         '400':
-          $ref: '#/components/responses/400BadRequest'
+          $ref: '#/components/responses/400BadRequestError'
   /admin/users/roles/new/{id}:
     post:
       summary: 権限追加
@@ -360,7 +410,7 @@ paths:
                   addAdminUsersRoleResult:
                     type: string
         '400':
-          $ref: '#/components/responses/400BadRequest'
+          $ref: '#/components/responses/400BadRequestError'
   /admin/users/roles/delete/{id}:
     delete:
       summary: 権限削除
@@ -388,14 +438,75 @@ paths:
                     type: string
                     nullable: true
         '400':
-          $ref: '#/components/responses/400BadRequest'
+          $ref: '#/components/responses/400BadRequestError'
 components:
   securitySchemes:
     BeareAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
+  responses:
+    NoContentResponse:
+      description: リクエストが成功し、返すコンテンツがありません
+    400BadRequestError:
+      description: リクエストが不正です
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: リクエストパラメータが不正です
+    403ForbiddenError:
+      description: アクセス権限がありません
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: このリソースにアクセスする権限がありません
+    422UnprocessableContentError:
+      description: クライアントが無効な引数を指定しました
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: バリデーションエラーです。
+    500InternalServerError:
+      description: サーバー内部でエラーが発生しました
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: 内部サーバーエラーが発生しました。詳細はサーバーログを確認してください。
   schemas:
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        code:
+          type: string
+          description: エラーコード
+        message:
+          type: string
+          description: エラーメッセージ
+        details:
+          type: object
+          description: 追加のエラー詳細情報
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: example@example.com
+        password:
+          type: string
+      required:
+        - email
+        - password
     User:
       type: object
       properties:
@@ -675,15 +786,6 @@ components:
         gender:
           type: string
           nullable: true
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-          description: エラーコード
-        message:
-          type: string
-          description: エラーメッセージ
     UserProfile:
       type: object
       properties:
@@ -740,13 +842,3 @@ components:
         self_introduction:
           type: string
           nullable: true
-  responses:
-    400BadRequest:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          example:
-            code: ''
-            message: zzzzは必須です。
