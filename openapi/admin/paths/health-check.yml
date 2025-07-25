@@ -5,6 +5,6 @@ get:
     - healthCheck
   responses:
     "200":
-      $ref: '../components/responses/Success.yml#/NoContentResponse'
+      $ref: '../components/responses/Success.yml#/SimpleSuccessResponse'
     "400":
       $ref: '../components/responses/Errors.yml#/400BadRequestError'

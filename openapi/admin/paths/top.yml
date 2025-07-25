@@ -1,6 +1,13 @@
-post:
+get:
   tags:
     - top
+  # parameters:
+  #   - in: header
+  #     name: XSRF-TOKEN
+  #     schema:
+  #       type: string
+  #     required: true
+  #     description: XSRF-TOKEN
   summary: top画面を表示するときに送るapi情報
   description: top画面を表示するときに送るapi情報
   security: []
@@ -29,3 +36,7 @@ post:
                     $ref: ../components/schemas/ReportsOfFollowingUser.yml
     "400":
       $ref: '../components/responses/Errors.yml#/400BadRequestError'
+    "401":
+      $ref: '../components/responses/Errors.yml#/401UnauthorizedError'
+    "403":
+      $ref: '../components/responses/Errors.yml#/403ForbiddenError'

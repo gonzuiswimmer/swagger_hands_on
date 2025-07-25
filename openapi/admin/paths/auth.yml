@@ -24,8 +24,8 @@ login:
                   example: "admin"
       "422":
         $ref: '../components/responses/Errors.yml#/422UnprocessableContentError'
-      "403":
-        $ref: '../components/responses/Errors.yml#/403ForbiddenError'
+      "500":
+        $ref: '../components/responses/Errors.yml#/500InternalServerError'
 
 logout:
   post:

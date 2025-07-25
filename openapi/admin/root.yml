@@ -38,7 +38,34 @@ servers:
     description: 開発環境のAPIサーバー
 
 paths:
-  $ref: ./paths/index.yml
+  /health-check:
+    $ref: ./paths/health-check.yml
+  /auth/login:
+    $ref: ./paths/auth.yml#/login
+  /auth/logout:
+    $ref: ./paths/auth.yml#/logout
+  /user:
+    $ref: ./paths/user.yml
+  /top:
+    $ref: ./paths/top.yml
+  /getDepartments:
+    $ref: ./paths/getDepartments.yml
+  /admin/users:
+    $ref: ./paths/admin/users/index.yml
+  /admin/users/store:
+    $ref: ./paths/admin/users/store.yml
+  /admin/users/edit/{id}:
+    $ref: ./paths/admin/users/edit.yml
+  /admin/users/update/{id}:
+    $ref: ./paths/admin/users/update.yml
+  /admin/users/destroy/{id}:
+    $ref: ./paths/admin/users/destroy.yml
+  /admin/users/roles:
+    $ref: ./paths/admin/users/roles.yml
+  /admin/users/roles/new/{id}:
+    $ref: ./paths/admin/users/rolesNew.yml
+  /admin/users/roles/delete/{id}:
+    $ref: ./paths/admin/users/rolesDelete.yml
 
 components:
   securitySchemes:
