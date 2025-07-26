@@ -32,7 +32,7 @@ tags:
     description: 管理者向けユーザー制御系API
   - name: adminUserAnnouncement
     description: 管理者向けお知らせ系API
-  - name: adnimuserInquiry
+  - name: adminUserInquiry
     description: 管理者向け問い合わせ系API
   - name: adminUserRole
     description: 管理者向けロール制御系API
@@ -54,6 +54,9 @@ paths:
         - auth
       summary: ログイン
       security: []
+      parameters:
+        - $ref: '#/components/parameters/XSRF-TOKEN'
+        - $ref: '#/components/parameters/dash_replace2_session'
       requestBody:
         required: true
         content:
@@ -104,6 +107,9 @@ paths:
         - user
       summary: get user list
       security: []
+      parameters:
+        - $ref: '#/components/parameters/XSRF-TOKEN'
+        - $ref: '#/components/parameters/dash_replace2_session'
       responses:
         '200':
           description: successful operation
@@ -211,37 +217,18 @@ paths:
                 type: array
                 items:
                   type: object
-                  properties:
-                    data:
-                      type: array
-                      items:
-                        type: object
-                        allOf:
-                          - $ref: '#/components/schemas/User'
-                          - properties:
-                              department:
-                                $ref: '#/components/schemas/Department'
-                    current_pape:
-                      type: integer
-                      example: 1
-                    nex_page_url:
-                      type: string
-                      example: http://localhost/api/admin/xxxxx
-                    path:
-                      type: string
-                      example: http://localhost/api/admin/xxxxx
-                    per_page:
-                      type: integer
-                      example: 20
-                    prev_page_url:
-                      type: string
-                      example: null
-                    to:
-                      type: integer
-                      example: 20
-                    total:
-                      type: integer
-                      example: 92
+                  allOf:
+                    - $ref: '#/components/schemas/Pagenage'
+                    - properties:
+                        data:
+                          type: array
+                          items:
+                            type: object
+                            allOf:
+                              - $ref: '#/components/schemas/User'
+                              - properties:
+                                  department:
+                                    $ref: '#/components/schemas/Department'
         '400':
           $ref: '#/components/responses/400BadRequestError'
   /admin/users/store:
@@ -492,66 +479,92 @@ components:
       properties:
         id:
           type: number
+          example: 1
         name:
           type: string
+          example: 佐藤
         employee_code:
           type: string
+          example: 1234567890
         encrypted_email:
           type: string
+          example: example@example.com
         entry_date:
           type: string
           format: date
+          example: '2025-01-01'
         beginner_flg:
           type: boolean
+          example: true
         deleted_at:
           type: string
           format: date-time
+          example: '2025-01-01T00:00:00.000Z'
         created_at:
           type: string
           format: date-time
+          example: '2025-01-01T00:00:00.000Z'
         updated_at:
           type: string
           format: date-time
+          example: '2025-01-01T00:00:00.000Z'
         encrypted_password:
           type: string
+          example: pass1234
         reset_password_token:
           type: string
+          example: 1234567890_token
         reset_password_sent_at:
           type: string
           format: date-time
+          example: '2025-01-01T00:00:00.000Z'
         remember_created_at:
           type: string
           format: date-time
+          example: '2025-01-01T00:00:00.000Z'
         sign_in_count:
           type: number
+          example: 1
         current_sign_in_at:
           type: string
           format: date-time
+          example: '2025-01-01T00:00:00.000Z'
         last_sign_in_at:
           type: string
           format: date-time
+          example: '2025-01-01T00:00:00.000Z'
         current_sign_in_ip:
           type: string
+          example: 127.0.0.1
         last_sign_in_ip:
           type: string
+          example: 127.0.0.1
         faled_attempts:
           type: number
+          example: 1
         unlock_token:
           type: string
+          example: 1234567890_token
         locked_at:
           type: string
           format: date-time
+          example: '2025-01-01T00:00:00.000Z'
         gender:
           type: number
+          enum:
+            - 1
+            - 2
+          example: 1
         email:
           type: string
+          example: example@example.com
         department_id:
           type: number
+          example: 1
         email_verified_at:
           type: string
           format: date-time
-        tenant_id:
-          type: number
+          example: '2025-01-01T00:00:00.000Z'
     Announcement:
       type: object
       properties:
@@ -744,6 +757,57 @@ components:
         - 9
       description: |
         * 1 - WEB * 2 - CL * 3 - ML * 4 - 内勤 * 5 - 未設定 * 6 - FR * 7 - QA * 8 - PHP
+    Pagenage:
+      type: object
+      properties:
+        current_page:
+          type: integer
+          example: 1
+        from:
+          type: integer
+          example: 1
+        last_page:
+          type: integer
+          example: 10
+        per_page:
+          type: integer
+          example: 20
+        to:
+          type: integer
+          example: 10
+        total:
+          type: integer
+          example: 100
+        first_page_url:
+          type: string
+          example: http://localhost:80/api/admin/users?page=1
+        last_page_url:
+          type: string
+          example: http://localhost:80/api/admin/users?page=10
+        next_page_url:
+          type: string
+          example: http://localhost:80/api/admin/users?page=2
+        prev_page_url:
+          type: string
+          example: http://localhost:80/api/admin/users?page=1
+        links:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              label:
+                type: string
+                example: '&laquo; 前'
+              active:
+                type: boolean
+                example: false
+        path:
+          type: string
+          example: http://localhost:80/api/admin/users
+        data:
+          type: array
     UserRegisterRequest:
       type: object
       properties:
@@ -871,3 +935,20 @@ components:
             $ref: '#/components/schemas/Error'
           example:
             message: 認証に失敗しました
+  parameters:
+    XSRF-TOKEN:
+      name: XSRF-TOKEN
+      in: header
+      required: true
+      schema:
+        type: string
+        description: XSRF-TOKENを格納する
+        example: xsrf-token=1234567890
+    dash_replace2_session:
+      name: dash_replace2_session
+      in: header
+      required: true
+      schema:
+        type: string
+        description: セッション情報を格納する
+        example: dash_replace2_session=1234567890
