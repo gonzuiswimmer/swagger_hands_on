@@ -1,0 +1,198 @@
+index:
+  get:
+    tags:
+      - adminUser
+    summary: ユーザー検索/一覧画面表示時にuserListを返す
+    description: ユーザー検索/一覧画面表示時にuserListを返す
+    security: []
+    parameters:
+      - in: query
+        name: user_status
+        schema:
+          type: string
+          enum: ["retired", "working"]
+      - in: query
+        name: user_name
+        schema:
+          type: string
+          example: 佐藤
+      - in: query
+        name: hiredMonth
+        schema:
+          type: string
+          format: date-time
+          example: 2025-06-30T15:00:00.000Z
+      - in: query
+        name: department
+        schema:
+          $ref: ../../components/schemas/Enum.yml#/DepartmentEnum
+
+    responses:
+      "200":
+        description: "OK"
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      allOf:
+                        - $ref: ../../components/schemas/User.yml
+                        - properties:
+                            department:
+                              $ref: ../../components/schemas/Department.yml
+
+                  current_pape:
+                    type: integer
+                    example: 1
+                  nex_page_url:
+                    type: string
+                    example: http://localhost/api/admin/xxxxx
+                  path:
+                    type: string
+                    example: http://localhost/api/admin/xxxxx
+                  per_page:
+                    type: integer
+                    example: 20
+                  prev_page_url:
+                    type: string
+                    example: null
+                  to:
+                    type: integer
+                    example: 20
+                  total:
+                    type: integer
+                    example: 92
+      "400":
+        $ref: '../../components/responses/Errors.yml#/400BadRequestError'
+
+store:
+  post:
+    summary: ユーザー新規登録
+    tags: [adminUser]
+    security:
+      - BeareAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/requestBodies/UserRegisterRequest.yml
+    responses:
+      "200":
+        description: 登録結果
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                CreateUserResult:
+                  type: boolean
+                message:
+                  type: string
+                  nullable: true
+      "400":
+        $ref: '../../components/responses/Errors.yml#/400BadRequestError'
+
+edit:
+  get:
+    summary: ユーザー編集情報取得
+    tags: [adminUser]
+    security:
+      - BeareAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: 編集情報
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  $ref: ../../components/schemas/User.yml
+                user_profile:
+                  $ref: ../../components/schemas/UserProfile.yml
+                followings:
+                  type: array
+                  items:
+                    $ref: ../../components/schemas/User.yml
+                followers:
+                  type: array
+                  items:
+                    $ref: ../../components/schemas/User.yml
+
+      "400":
+        $ref: '../../components/responses/Errors.yml#/400BadRequestError'
+
+update:
+  patch:
+    summary: ユーザー情報更新
+    tags: [adminUser]
+    security:
+      - BeareAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/requestBodies/UserUpdateRequest.yml
+    responses:
+      "200":
+        description: 更新結果
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                UpdateUserResult:
+                  type: boolean
+                message:
+                  type: string
+                  nullable: true
+      "400":
+        $ref: '../../components/responses/Errors.yml#/400BadRequestError'
+
+destroy:
+  patch:
+    summary: ユーザー削除
+    tags: [adminUser]
+    security:
+      - BeareAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: 削除結果
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                DestroyUserResult:
+                  type: boolean
+                message:
+                  type: string
+                  nullable: true
+      "400":
+        $ref: '../../components/responses/Errors.yml#/400BadRequestError'

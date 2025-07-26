@@ -1,0 +1,16 @@
+XSRF-TOKEN:
+  name: XSRF-TOKEN
+  in: header
+  required: true
+  schema:
+    type: string
+    description: XSRF-TOKENを格納する
+    example: "xsrf-token=1234567890"
+dash_replace2_session:
+  name: dash_replace2_session
+  in: header
+  required: true
+  schema:
+    type: string
+    description: セッション情報を格納する
+    example: "dash_replace2_session=1234567890"

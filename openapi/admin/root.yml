@@ -22,7 +22,7 @@ tags:
     description: 管理者向けユーザー制御系API
   - name: adminUserAnnouncement
     description: 管理者向けお知らせ系API
-  - name: adnimuserInquiry
+  - name: adminUserInquiry
     description: 管理者向け問い合わせ系API
   - name: adminUserRole
     description: 管理者向けロール制御系API
@@ -51,21 +51,21 @@ paths:
   /getDepartments:
     $ref: ./paths/getDepartments.yml
   /admin/users:
-    $ref: ./paths/admin/users/index.yml
+    $ref: ./paths/admin/users.yml#/index
   /admin/users/store:
-    $ref: ./paths/admin/users/store.yml
+    $ref: ./paths/admin/users.yml#/store
   /admin/users/edit/{id}:
-    $ref: ./paths/admin/users/edit.yml
+    $ref: ./paths/admin/users.yml#/edit
   /admin/users/update/{id}:
-    $ref: ./paths/admin/users/update.yml
+    $ref: ./paths/admin/users.yml#/update
   /admin/users/destroy/{id}:
-    $ref: ./paths/admin/users/destroy.yml
+    $ref: ./paths/admin/users.yml#/destroy
   /admin/users/roles:
-    $ref: ./paths/admin/users/roles.yml
+    $ref: ./paths/admin/roles.yml#/index
   /admin/users/roles/new/{id}:
-    $ref: ./paths/admin/users/rolesNew.yml
+    $ref: ./paths/admin/roles.yml#/new
   /admin/users/roles/delete/{id}:
-    $ref: ./paths/admin/users/rolesDelete.yml
+    $ref: ./paths/admin/roles.yml#/delete
 
 components:
   securitySchemes:

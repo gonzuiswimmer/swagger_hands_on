@@ -4,6 +4,12 @@ login:
       - auth
     summary: ログイン
     security: []
+    parameters:
+      - $ref: '../components/headers/commonHeader.yml#/XSRF-TOKEN'
+      - $ref: '../components/headers/commonHeader.yml#/dash_replace2_session'
+
+ 
+
     requestBody:
       required: true
       content:

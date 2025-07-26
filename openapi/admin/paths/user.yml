@@ -3,6 +3,9 @@ get:
     - user
   summary: get user list
   security: []
+  parameters:
+    - $ref: '../components/headers/commonHeader.yml#/XSRF-TOKEN'
+    - $ref: '../components/headers/commonHeader.yml#/dash_replace2_session'
   responses:
     "200":
       description: "successful operation"

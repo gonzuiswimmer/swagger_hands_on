@@ -1,0 +1,73 @@
+index:
+  get:
+    summary: 権限一覧取得
+    tags: [adminUserRole]
+    security:
+      - BeareAuth: []
+    responses:
+      "200":
+        description: 権限ユーザー一覧
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                users:
+                  type: array
+                  items:
+                    $ref: ../../components/schemas/User.yml
+      "400":
+        $ref: '../../components/responses/Errors.yml#/400BadRequestError'
+
+new:
+  post:
+    summary: 権限追加
+    tags: [adminUserRole]
+    security:
+      - BeareAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: 追加結果
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                addAdminUsersRoleResult:
+                  type: string
+      "400":
+        $ref: '../../components/responses/Errors.yml#/400BadRequestError'
+
+delete:
+  delete:
+    summary: 権限削除
+    tags: [adminUserRole]
+    security:
+      - BeareAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: 削除結果
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                destroyAdminUserRoleResult:
+                  type: boolean
+                message:
+                  type: string
+                  nullable: true
+      "400":
+        $ref: '../../components/responses/Errors.yml#/400BadRequestError'

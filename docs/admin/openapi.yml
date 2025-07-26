@@ -32,7 +32,7 @@ tags:
     description: 管理者向けユーザー制御系API
   - name: adminUserAnnouncement
     description: 管理者向けお知らせ系API
-  - name: adnimuserInquiry
+  - name: adminUserInquiry
     description: 管理者向け問い合わせ系API
   - name: adminUserRole
     description: 管理者向けロール制御系API
@@ -54,6 +54,9 @@ paths:
         - auth
       summary: ログイン
       security: []
+      parameters:
+        - $ref: '#/components/parameters/XSRF-TOKEN'
+        - $ref: '#/components/parameters/dash_replace2_session'
       requestBody:
         required: true
         content:
@@ -104,6 +107,9 @@ paths:
         - user
       summary: get user list
       security: []
+      parameters:
+        - $ref: '#/components/parameters/XSRF-TOKEN'
+        - $ref: '#/components/parameters/dash_replace2_session'
       responses:
         '200':
           description: successful operation
@@ -871,3 +877,20 @@ components:
             $ref: '#/components/schemas/Error'
           example:
             message: 認証に失敗しました
+  parameters:
+    XSRF-TOKEN:
+      name: XSRF-TOKEN
+      in: header
+      required: true
+      schema:
+        type: string
+        description: XSRF-TOKENを格納する
+        example: xsrf-token=1234567890
+    dash_replace2_session:
+      name: dash_replace2_session
+      in: header
+      required: true
+      schema:
+        type: string
+        description: セッション情報を格納する
+        example: dash_replace2_session=1234567890
