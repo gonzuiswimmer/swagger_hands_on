@@ -2,63 +2,90 @@ type: object
 properties:
   id:
     type: number
+    example: 1
   name:
     type: string
+    example: 佐藤
   employee_code:
     type: string
+    example: 1234567890
   encrypted_email:
     type: string
+    example: example@example.com
   entry_date:
     type: string
     format: date
+    example: 2025-01-01
   beginner_flg:
     type: boolean
+    example: true
   deleted_at:
     type: string
     format: date-time
+    example: 2025-01-01T00:00:00.000Z
   created_at:
     type: string
     format: date-time
+    example: 2025-01-01T00:00:00.000Z
   updated_at:
     type: string
     format: date-time
+    example: 2025-01-01T00:00:00.000Z
   encrypted_password:
     type: string
+    example: pass1234
   reset_password_token:
     type: string
+    example: 1234567890_token
   reset_password_sent_at:
     type: string
     format: date-time
+    example: 2025-01-01T00:00:00.000Z
   remember_created_at:
     type: string
     format: date-time
+    example: 2025-01-01T00:00:00.000Z
   sign_in_count:
     type: number
+    example: 1
   current_sign_in_at:
     type: string
     format: date-time
+    example: 2025-01-01T00:00:00.000Z
   last_sign_in_at:
     type: string
     format: date-time
+    example: 2025-01-01T00:00:00.000Z
   current_sign_in_ip:
     type: string
+    example: 127.0.0.1
   last_sign_in_ip:
     type: string
+    example: 127.0.0.1
   faled_attempts:
     type: number
+    example: 1
   unlock_token:
     type: string
+    example: 1234567890_token
   locked_at:
     type: string
     format: date-time
+    example: 2025-01-01T00:00:00.000Z
   gender:
     type: number
+    enum: [1, 2]
+    example: 1
   email:
     type: string
+    example: example@example.com
   department_id:
     type: number
+    example: 1
   email_verified_at:
     type: string
     format: date-time
-  tenant_id:
-    type: number
+    example: 2025-01-01T00:00:00.000Z
+  # tenant_id:
+  #   type: number
+  #   example: 1

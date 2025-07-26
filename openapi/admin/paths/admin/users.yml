@@ -36,38 +36,29 @@ index:
               type: array
               items:
                 type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      type: object
-                      allOf:
-                        - $ref: ../../components/schemas/User.yml
-                        - properties:
-                            department:
-                              $ref: ../../components/schemas/Department.yml
+                allOf:
+                  - $ref: ../../components/responses/Common.yml#/Pagenage
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          type: object
+                          allOf:
+                            - $ref: ../../components/schemas/User.yml
+                            - properties:
+                                department:
+                                  $ref: ../../components/schemas/Department.yml
+                  # data:
+                  #   type: array
+                  #   items:
+                  #     type: object
+                  #     allOf:
+                  #       - $ref: ../../components/schemas/User.yml
+                  #       - properties:
+                  #           department:
+                  #             $ref: ../../components/schemas/Department.yml
 
-                  current_pape:
-                    type: integer
-                    example: 1
-                  nex_page_url:
-                    type: string
-                    example: http://localhost/api/admin/xxxxx
-                  path:
-                    type: string
-                    example: http://localhost/api/admin/xxxxx
-                  per_page:
-                    type: integer
-                    example: 20
-                  prev_page_url:
-                    type: string
-                    example: null
-                  to:
-                    type: integer
-                    example: 20
-                  total:
-                    type: integer
-                    example: 92
+
       "400":
         $ref: '../../components/responses/Errors.yml#/400BadRequestError'
 
