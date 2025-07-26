@@ -45,7 +45,7 @@ paths:
         - healthCheck
       responses:
         '200':
-          $ref: '#/components/responses/NoContentResponse'
+          $ref: '#/components/responses/SimpleSuccessResponse'
         '400':
           $ref: '#/components/responses/400BadRequestError'
   /auth/login:
@@ -72,10 +72,10 @@ paths:
                     type: string
                     description: ロール
                     example: admin
-        '403':
-          $ref: '#/components/responses/403ForbiddenError'
         '422':
           $ref: '#/components/responses/422UnprocessableContentError'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
   /auth/logout:
     post:
       tags:
@@ -116,7 +116,7 @@ paths:
         '400':
           $ref: '#/components/responses/400BadRequestError'
   /top:
-    post:
+    get:
       tags:
         - top
       summary: top画面を表示するときに送るapi情報
@@ -146,6 +146,10 @@ paths:
                         $ref: '#/components/schemas/ReportsOfFollowingUser'
         '400':
           $ref: '#/components/responses/400BadRequestError'
+        '401':
+          $ref: '#/components/responses/401UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/403ForbiddenError'
   /getDepartments:
     get:
       tags:
@@ -445,42 +449,18 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-  responses:
-    NoContentResponse:
-      description: リクエストが成功し、返すコンテンツがありません
-    400BadRequestError:
-      description: リクエストが不正です
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          example:
-            message: リクエストパラメータが不正です
-    403ForbiddenError:
-      description: アクセス権限がありません
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          example:
-            message: このリソースにアクセスする権限がありません
-    422UnprocessableContentError:
-      description: クライアントが無効な引数を指定しました
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          example:
-            message: バリデーションエラーです。
-    500InternalServerError:
-      description: サーバー内部でエラーが発生しました
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          example:
-            message: 内部サーバーエラーが発生しました。詳細はサーバーログを確認してください。
   schemas:
+    SuccessResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          description: レスポンスデータ
+        message:
+          type: string
+          description: 成功メッセージ（オプショナル）
     Error:
       type: object
       required:
@@ -842,3 +822,52 @@ components:
         self_introduction:
           type: string
           nullable: true
+  responses:
+    SimpleSuccessResponse:
+      description: リソースが正常に作成されました
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SuccessResponse'
+            example:
+              message: Successメッセージ
+    400BadRequestError:
+      description: リクエストが不正です
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: リクエストパラメータが不正です
+    422UnprocessableContentError:
+      description: クライアントが無効な引数を指定しました
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: バリデーションエラーです。
+    500InternalServerError:
+      description: サーバー内部でエラーが発生しました
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: 内部サーバーエラーが発生しました。詳細はサーバーログを確認してください。
+    403ForbiddenError:
+      description: アクセス権限がありません
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: このリソースにアクセスする権限がありません
+    401UnauthorizedError:
+      description: 認証に失敗しました
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: 認証に失敗しました
